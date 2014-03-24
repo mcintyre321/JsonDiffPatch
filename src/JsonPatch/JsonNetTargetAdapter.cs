@@ -26,7 +26,15 @@ namespace Tavis
             JObject parenttoken = null;
             try
             {
-                token = operation.Path.Find(_target);
+                if (operation.Path.IsNewPointer())
+                {
+                    var parentPointer = operation.Path.ParentPointer;
+                    token = parentPointer.Find(_target) as JArray;
+                }
+                else
+                {
+                    token = operation.Path.Find(_target);
+                }
             }
             catch (ArgumentException)
             {

@@ -207,13 +207,37 @@ namespace JsonPatchTests
         [Fact]
         public void Copy_array_element()
         {
-            Assert.True(false);
+            var sample = GetSample2();
+
+            var patchDocument = new PatchDocument();
+            var frompointer = new JsonPointer("/books/0");
+            var topointer = new JsonPointer("/books/-");
+
+            patchDocument.AddOperation(new CopyOperation() { FromPath = frompointer, Path = topointer });
+
+            patchDocument.ApplyTo(sample);
+
+            var result = new JsonPointer("/books/2").Find(sample);
+            Assert.IsType(typeof(JObject), result);
+        
         }
 
         [Fact]
         public void Copy_property()
         {
-            Assert.True(false);
+            var sample = GetSample2();
+
+            var patchDocument = new PatchDocument();
+            var frompointer = new JsonPointer("/books/0/ISBN");
+            var topointer = new JsonPointer("/books/1/ISBN");
+
+            patchDocument.AddOperation(new AddOperation() { Path = frompointer, Value = new JValue("21123123")});
+            patchDocument.AddOperation(new CopyOperation() { FromPath = frompointer, Path = topointer });
+
+            patchDocument.ApplyTo(sample);
+
+            var result = new JsonPointer("/books/1/ISBN").Find(sample);
+            Assert.Equal("21123123", result);
         }
 
         public JToken GetSample2()

@@ -2,11 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Tavis.JsonPatch</id>
-    <version>0.5.1-beta</version>
+    <version>0.5.2-beta</version>
     <authors>Darrel Miller</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Implementation of a RFC6902 Json Patch </description>
-    <releaseNotes>Initial release</releaseNotes>
+    <releaseNotes>Added serialization/deserialize code</releaseNotes>
     <projectUrl>https://github.com/tavis-software/Tavis.JsonPatch</projectUrl>
  	<dependencies>
 		  <dependency id="Newtonsoft.Json" version="5.0.8" />

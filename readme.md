@@ -49,3 +49,7 @@ You can also read patch documents from the wire representation and apply them to
 You can also apply the Json patch format to other targets by implementing the `IPatchTarget` interface.
 
 The unit tests provide examples of other usages.
+
+This library is a PCL based library and so will work on Windows 8, Windows Phone 7.5, .Net 4.
+
+A nuget package is available [here](http://www.nuget.org/packages/Tavis.JsonPatch).

@@ -1,0 +1,24 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="default">
+  <PropertyGroup>
+    <BaseDir>$(MSBuildProjectDirectory)\..</BaseDir>
+    <Configuration Condition="'$(Configuration)'==''" >Release</Configuration>
+    <ProjectFilePCL>$(BaseDir)\src\JsonPatch\JsonPatch.csproj</ProjectFilePCL>
+    <Project>JsonPatch</Project>
+    <SolutionDir>$(BaseDir)</SolutionDir>  <!-- Needed or import of nuget targets in csproj file fails-->
+  </PropertyGroup>
+ 
+  
+  <Target Name="default" DependsOnTargets="Compile; Package" />
+ 
+  <Target Name="Compile">
+	<MSBuild Projects="$(ProjectFilePCL)" Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir)"  />
+  
+  </Target>
+ 
+  <Target Name="Package">
+ 
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" 
+          Command="c:\bin\nuget.exe pack $(MSBuildProjectDirectory)\Tavis.$(Project).nuspec" />
+ 
+  </Target>
+</Project>

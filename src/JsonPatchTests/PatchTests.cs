@@ -43,17 +43,19 @@ namespace JsonPatchTests
         {
             var targetDoc = JToken.Parse("{ 'foo': 'bar'}");
             var patchDoc = PatchDocument.Parse(@"[
-     { 'op': 'add', 'path': '/baz', 'value': 'qux' }
-   ]");
+                                                    { 'op': 'add', 'path': '/baz', 'value': 'qux' }
+                                                ]");
             patchDoc.ApplyTo(targetDoc);
 
 
-            Assert.Equal(JToken.Parse(@"{
-     'foo': 'bar',
-     'baz': 'qux'
-   }"), targetDoc);
+            Assert.True(JToken.DeepEquals(JToken.Parse(@"{
+                                                             'foo': 'bar',
+                                                             'baz': 'qux'
+                                                           }"), targetDoc));
         }
 
+
+  
 
         [Fact]
         public void SerializePatchDocument()

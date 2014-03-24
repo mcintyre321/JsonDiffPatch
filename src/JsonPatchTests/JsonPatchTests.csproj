@@ -48,8 +48,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddTests.cs" />
+    <Compile Include="CopyTests.cs" />
+    <Compile Include="MoveTests.cs" />
     <Compile Include="PatchTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoveTests.cs" />
+    <Compile Include="ReplaceTests.cs" />
+    <Compile Include="TestTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -59,6 +65,9 @@
       <Project>{f28b8328-85be-4048-aa16-0c069095fb1f}</Project>
       <Name>JsonPatch</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\LoadTest1.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

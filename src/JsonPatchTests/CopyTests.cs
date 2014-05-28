@@ -22,7 +22,7 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new CopyOperation() { FromPath = frompointer, Path = topointer });
 
-            patchDocument.ApplyTo(sample);
+            patchDocument.ApplyTo(ref sample);
 
             var result = new JsonPointer("/books/2").Find(sample);
             Assert.IsType(typeof(JObject), result);
@@ -41,7 +41,7 @@ namespace JsonPatchTests
             patchDocument.AddOperation(new AddOperation() { Path = frompointer, Value = new JValue("21123123") });
             patchDocument.AddOperation(new CopyOperation() { FromPath = frompointer, Path = topointer });
 
-            patchDocument.ApplyTo(sample);
+            patchDocument.ApplyTo(ref sample);
 
             var result = new JsonPointer("/books/1/ISBN").Find(sample);
             Assert.Equal("21123123", result);

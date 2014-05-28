@@ -23,7 +23,7 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new MoveOperation() { FromPath = frompointer, Path = topointer });
 
-            patchDocument.ApplyTo(sample);
+            patchDocument.ApplyTo(ref sample);
 
 
             var result = (string)topointer.Find(sample);
@@ -41,7 +41,7 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new MoveOperation() { FromPath = frompointer, Path = topointer });
 
-            patchDocument.ApplyTo(sample);
+            patchDocument.ApplyTo(ref sample);
 
 
             var result = topointer.Find(sample);

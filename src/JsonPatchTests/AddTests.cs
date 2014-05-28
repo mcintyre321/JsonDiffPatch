@@ -23,7 +23,7 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new AddOperation() { Path = pointer, Value = new JObject(new[] { new JProperty("author", "James Brown") }) });
 
-            patchDocument.ApplyTo(sample);
+            patchDocument.ApplyTo(ref sample);
 
             var list = sample["books"] as JArray;
 
@@ -42,7 +42,7 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new AddOperation() { Path = pointer, Value = new JValue("Little Red Riding Hood") });
 
-            patchDocument.ApplyTo(sample);
+            patchDocument.ApplyTo(ref sample);
 
 
             var result = (string)pointer.Find(sample);
@@ -61,7 +61,7 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new AddOperation() { Path = pointer, Value = new JValue("213324234343") });
 
-            patchDocument.ApplyTo(sample);
+            patchDocument.ApplyTo(ref sample);
 
 
             var result = (string)pointer.Find(sample);

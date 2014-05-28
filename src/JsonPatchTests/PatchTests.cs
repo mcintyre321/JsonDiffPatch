@@ -45,7 +45,7 @@ namespace JsonPatchTests
             var patchDoc = PatchDocument.Parse(@"[
                                                     { 'op': 'add', 'path': '/baz', 'value': 'qux' }
                                                 ]");
-            patchDoc.ApplyTo(targetDoc);
+            patchDoc.ApplyTo(ref targetDoc);
 
 
             Assert.True(JToken.DeepEquals(JToken.Parse(@"{

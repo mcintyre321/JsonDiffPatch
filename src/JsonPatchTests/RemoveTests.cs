@@ -21,7 +21,7 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new RemoveOperation() { Path = pointer });
 
-            patchDocument.ApplyTo(sample);
+            patchDocument.ApplyTo(ref sample);
 
             Assert.Throws(typeof(ArgumentException), () => { pointer.Find(sample); });
         }
@@ -37,7 +37,7 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new RemoveOperation() { Path = pointer });
 
-            patchDocument.ApplyTo(sample);
+            patchDocument.ApplyTo(ref sample);
 
             Assert.Throws(typeof(ArgumentException), () =>
             {

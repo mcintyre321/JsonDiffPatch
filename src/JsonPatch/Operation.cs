@@ -33,6 +33,18 @@ namespace Tavis
         }
 
         public abstract void Read(JObject jOperation);
+
+        public static Operation Parse(string json)
+        {
+            return Build(JObject.Parse(json));
+        }
+
+        public static Operation Build(JObject jOperation)
+        {
+            var op = PatchDocument.CreateOperation((string)jOperation["op"]);
+            op.Read(jOperation);
+            return op;
+        }
     }
 
     public class AddOperation : Operation

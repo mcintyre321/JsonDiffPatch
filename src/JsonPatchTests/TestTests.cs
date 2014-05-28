@@ -24,7 +24,7 @@ namespace JsonPatchTests
 
             Assert.Throws(typeof(InvalidOperationException), () =>
             {
-                patchDocument.ApplyTo(sample);
+                patchDocument.ApplyTo(ref sample);
             });
 
         }

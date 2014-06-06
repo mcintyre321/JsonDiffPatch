@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Tavis
+namespace Tavis.JsonPatch
 {
     public class PatchDocument
     {
@@ -26,20 +25,7 @@ namespace Tavis
             get { return _Operations; }
         }
 
-        public void ApplyTo(ref JToken jToken)
-        {
-            var jsonNetTargetAdapter = new JsonNetTargetAdapter(jToken);
-            ApplyTo(jsonNetTargetAdapter);
-            jToken = jsonNetTargetAdapter.Doc;
-        }
-
-        public void ApplyTo(JsonNetTargetAdapter adapter)
-        {
-            foreach (var operation in Operations)
-            {
-                adapter.ApplyOperation(operation);
-            }
-        }
+        
 
         public void AddOperation(Operation operation)
         {

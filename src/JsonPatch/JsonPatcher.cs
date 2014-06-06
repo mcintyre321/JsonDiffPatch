@@ -2,18 +2,14 @@
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Tavis
+namespace Tavis.JsonPatch
 {
-    public class JsonNetTargetAdapter : BaseTargetAdapter<JToken>
+    public class JsonPatcher : AbstractPatcher<JToken>
     {
-        public JsonNetTargetAdapter(JToken target) : base(target)
-        {
-        }
 
-
-        protected override JToken Replace(ReplaceOperation operation)
+        protected override JToken Replace(ReplaceOperation operation, JToken target)
         {
-            var token = operation.Path.Find(base.Doc);
+            var token = operation.Path.Find(target);
             if (token.Parent == null)
             {
                 return operation.Value;
@@ -25,7 +21,7 @@ namespace Tavis
             }
         }
 
-        protected override void Add(AddOperation operation)
+        protected override void Add(AddOperation operation, JToken target)
         {
             JToken token = null;
             JObject parenttoken = null;
@@ -34,17 +30,17 @@ namespace Tavis
                 if (operation.Path.IsNewPointer())
                 {
                     var parentPointer = operation.Path.ParentPointer;
-                    token = parentPointer.Find(base.Doc) as JArray;
+                    token = parentPointer.Find(target) as JArray;
                 }
                 else
                 {
-                    token = operation.Path.Find(base.Doc);
+                    token = operation.Path.Find(target);
                 }
             }
             catch (ArgumentException)
             {
                 var parentPointer = operation.Path.ParentPointer;
-                parenttoken = parentPointer.Find(base.Doc) as JObject;
+                parenttoken = parentPointer.Find(target) as JObject;
             }
 
             if (token == null && parenttoken != null)
@@ -64,9 +60,9 @@ namespace Tavis
         }
 
 
-        protected override void Remove(RemoveOperation operation)
+        protected override void Remove(RemoveOperation operation, JToken target)
         {
-            var token = operation.Path.Find(base.Doc);
+            var token = operation.Path.Find(target);
             if (token.Parent is JProperty)
             {
                 token.Parent.Remove();
@@ -77,28 +73,28 @@ namespace Tavis
             }
         }
 
-        protected override void Move(MoveOperation operation)
+        protected override void Move(MoveOperation operation, JToken target)
         {
             if (operation.Path.ToString().StartsWith(operation.FromPath.ToString())) throw new ArgumentException("To path cannot be below from path");
 
-            var token = operation.FromPath.Find(base.Doc);
-            Remove(new RemoveOperation(){Path = operation.FromPath});
-            Add(new AddOperation() {Path = operation.Path, Value = token});
+            var token = operation.FromPath.Find(target);
+            Remove(new RemoveOperation(){Path = operation.FromPath}, target);
+            Add(new AddOperation() {Path = operation.Path, Value = token}, target);
         }
 
-        protected override void Test(TestOperation operation)
+        protected override void Test(TestOperation operation, JToken target)
         {
-            var existingValue = operation.Path.Find(base.Doc);
-            if (!existingValue.Equals(base.Doc))
+            var existingValue = operation.Path.Find(target);
+            if (!existingValue.Equals(target))
             {
                 throw new InvalidOperationException("Value at " + operation.Path.ToString() + " does not match.");
             }
         }
 
-        protected override void Copy(CopyOperation operation)
+        protected override void Copy(CopyOperation operation, JToken target)
         {
-            var token = operation.FromPath.Find(base.Doc);  // Do I need to clone this?
-            Add(new AddOperation() {Path = operation.Path, Value = token});
+            var token = operation.FromPath.Find(target);  // Do I need to clone this?
+            Add(new AddOperation() {Path = operation.Path, Value = token}, target);
         }
     }
 }

@@ -2,9 +2,8 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using Tavis;
 
-namespace JsonPatchTests.Diff
+namespace Tavis.JsonPatch.Tests
 {
     [TestFixture]
     public class DiffTests
@@ -74,9 +73,9 @@ namespace JsonPatchTests.Diff
             var left = JToken.Parse(leftString);
             var right = JToken.Parse(rightString);
 
-            var patches = Differ.CalculatePatch(left, right).ToList();
-            var patchDoc = new PatchDocument(patches.ToArray());
-            patchDoc.ApplyTo(ref left);
+            var patchDoc = new JsonDiffer().Diff(left, right);
+            var patcher = new JsonPatcher();
+            patcher.Patch(ref left, patchDoc);
 
 
             Assert.True(JToken.DeepEquals(left, right));

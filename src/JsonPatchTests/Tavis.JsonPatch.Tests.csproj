@@ -7,8 +7,8 @@
     <ProjectGuid>{1FCBC3F6-73A3-4686-9A8B-A7709CF1C198}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>JsonPatchTests</RootNamespace>
-    <AssemblyName>JsonPatchTests</AssemblyName>
+    <RootNamespace>Tavis.JsonPatch.Tests</RootNamespace>
+    <AssemblyName>Tavis.JsonPatch.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -71,9 +71,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JsonPatch\JsonPatch.csproj">
+    <ProjectReference Include="..\JsonPatch\Tavis.JsonPatch.csproj">
       <Project>{f28b8328-85be-4048-aa16-0c069095fb1f}</Project>
-      <Name>JsonPatch</Name>
+      <Name>Tavis.JsonPatch</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

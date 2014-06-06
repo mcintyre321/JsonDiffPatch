@@ -21,7 +21,7 @@
         /// <param name="operation"></param>
         /// <param name="target"></param>
         /// <returns>a new root document, or null if one is not needed</returns>
-        public TDoc ApplyOperation(Operation operation, TDoc target)
+        public virtual TDoc ApplyOperation(Operation operation, TDoc target)
         {
             if (operation is AddOperation) Add((AddOperation)operation, target);
             else if (operation is CopyOperation) Copy((CopyOperation)operation, target);

@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tavis;
 using Xunit;
 
-namespace JsonPatchTests
+namespace Tavis.JsonPatch.Tests
 {
     public class RemoveTests
     {
@@ -21,7 +16,7 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new RemoveOperation() { Path = pointer });
 
-            patchDocument.ApplyTo(ref sample);
+            new JsonPatcher().Patch(ref sample, patchDocument);
 
             Assert.Throws(typeof(ArgumentException), () => { pointer.Find(sample); });
         }
@@ -37,7 +32,8 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new RemoveOperation() { Path = pointer });
 
-            patchDocument.ApplyTo(ref sample);
+            var patcher = new JsonPatcher();
+            patcher.Patch(ref sample, patchDocument);
 
             Assert.Throws(typeof(ArgumentException), () =>
             {

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using Tavis;
 using Xunit;
 
-namespace JsonPatchTests
+namespace Tavis.JsonPatch.Tests
 {
     public class TestTests
     {
@@ -24,7 +19,8 @@ namespace JsonPatchTests
 
             Assert.Throws(typeof(InvalidOperationException), () =>
             {
-                patchDocument.ApplyTo(ref sample);
+                var patcher = new JsonPatcher();
+                patcher.Patch(ref sample, patchDocument);
             });
 
         }

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPatch", "src\JsonPatch\JsonPatch.csproj", "{F28B8328-85BE-4048-AA16-0C069095FB1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavis.JsonPatch", "src\JsonPatch\Tavis.JsonPatch.csproj", "{F28B8328-85BE-4048-AA16-0C069095FB1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPatchTests", "src\JsonPatchTests\JsonPatchTests.csproj", "{1FCBC3F6-73A3-4686-9A8B-A7709CF1C198}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavis.JsonPatch.Tests", "src\JsonPatchTests\Tavis.JsonPatch.Tests.csproj", "{1FCBC3F6-73A3-4686-9A8B-A7709CF1C198}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

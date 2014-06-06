@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Tavis;
+﻿using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace JsonPatchTests
+namespace Tavis.JsonPatch.Tests
 {
     public class MoveTests
     {
@@ -23,7 +17,8 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new MoveOperation() { FromPath = frompointer, Path = topointer });
 
-            patchDocument.ApplyTo(ref sample);
+            var patcher = new JsonPatcher();
+            patcher.Patch(ref sample, patchDocument);
 
 
             var result = (string)topointer.Find(sample);
@@ -41,7 +36,8 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new MoveOperation() { FromPath = frompointer, Path = topointer });
 
-            patchDocument.ApplyTo(ref sample);
+            var patcher = new JsonPatcher();
+            patcher.Patch(ref sample, patchDocument);
 
 
             var result = topointer.Find(sample);

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Tavis;
+﻿using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace JsonPatchTests
+namespace Tavis.JsonPatch.Tests
 {
     public class ReplaceTests
     {
@@ -22,7 +16,7 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new ReplaceOperation() { Path = pointer, Value = new JValue("Bob Brown") });
 
-            patchDocument.ApplyTo(new JsonNetTargetAdapter(sample));
+            new JsonPatcher().Patch(ref sample, patchDocument);
 
             Assert.Equal("Bob Brown", (string)pointer.Find(sample));
         }
@@ -38,7 +32,7 @@ namespace JsonPatchTests
 
             patchDocument.AddOperation(new ReplaceOperation() { Path = pointer, Value = new JObject(new[] { new JProperty("hello", "world") }) });
 
-            patchDocument.ApplyTo(new JsonNetTargetAdapter(sample));
+            new JsonPatcher().Patch(ref sample, patchDocument);
 
             var newPointer = new JsonPointer("/books/0/author/hello");
             Assert.Equal("world", (string)newPointer.Find(sample));

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Newtonsoft.Json.Linq;
-using Tavis;
 using Xunit;
 
-namespace JsonPatchTests
+namespace Tavis.JsonPatch.Tests
 {
     public class PatchTests
     {
@@ -20,7 +14,7 @@ namespace JsonPatchTests
             var sampletext = sample.ToString();
 
             var patchDocument = new PatchDocument();
-            patchDocument.ApplyTo(new JsonNetTargetAdapter(sample));
+            new JsonPatcher().Patch(ref sample, patchDocument);
 
             Assert.Equal(sampletext,sample.ToString());
         }
@@ -45,7 +39,7 @@ namespace JsonPatchTests
             var patchDoc = PatchDocument.Parse(@"[
                                                     { 'op': 'add', 'path': '/baz', 'value': 'qux' }
                                                 ]");
-            patchDoc.ApplyTo(ref targetDoc);
+            new JsonPatcher().Patch(ref targetDoc, patchDoc);
 
 
             Assert.True(JToken.DeepEquals(JToken.Parse(@"{

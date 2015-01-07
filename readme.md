@@ -1,7 +1,10 @@
-# Tavis.JsonPatch
+# JsonDiffPatch
+
+
 
 This library is an implementation of a Json Patch [RFC 6902](http://tools.ietf.org/html/rfc6902).  
-
+ * forked from https://github.com/tavis-software/Tavis.JsonPatch
+ * plus a modified diff generator by Ian Mercer (http://blog.abodit.com/2014/05/json-patch-c-implementation/)  
 
 The default example from the specification looks like this,
 

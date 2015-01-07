@@ -1,7 +1,8 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Tavis;
 
-namespace Tavis.JsonPatch
+namespace JsonDiffPatch
 {
     public class TestOperation : Operation
     {

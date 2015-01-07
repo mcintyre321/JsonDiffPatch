@@ -1,4 +1,5 @@
 ﻿using System;
+using JsonDiffPatch;
 using Xunit;
 
 namespace Tavis.JsonPatch.Tests

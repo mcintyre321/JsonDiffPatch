@@ -1,4 +1,4 @@
-﻿namespace Tavis.JsonPatch
+﻿namespace JsonDiffPatch
 {
     public abstract class AbstractPatcher<TDoc> where TDoc : class 
     {

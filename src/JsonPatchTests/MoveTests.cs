@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using JsonDiffPatch;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Tavis.JsonPatch.Tests

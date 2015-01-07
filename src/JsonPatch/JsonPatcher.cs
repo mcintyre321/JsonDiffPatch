@@ -2,7 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Tavis.JsonPatch
+namespace JsonDiffPatch
 {
     public class JsonPatcher : AbstractPatcher<JToken>
     {

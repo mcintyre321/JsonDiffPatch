@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/mcintyre321/JsonDiffPatch</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-     Library for diffing and patching json.net json objects
+      Library for diffing and patching json.net json objects - forked from Tavis.JsonPatch, with an addition of diff code by Ian Mercer
     </description>
     <copyright>Copyright 2015</copyright>
     <tags>JSON Diff Patch,RFC 6902</tags>

@@ -37,9 +37,7 @@ This document can be serialized to the wire format like this,
 You can also read patch documents from the wire representation and apply them to a JSON document.
 	
 	var targetDoc = JToken.Parse("{ 'foo': 'bar'}");
-        var patchDoc = PatchDocument.Parse(@"[
-                      { 'op': 'add', 'path': '/baz', 'value': 'qux' }
-                    ]");
+        var patchDoc = PatchDocument.Parse(@"[ { 'op': 'add', 'path': '/baz', 'value': 'qux' } ]");
 
         patchDoc.ApplyTo(targetDoc);
 

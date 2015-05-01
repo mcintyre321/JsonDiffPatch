@@ -46,7 +46,7 @@ namespace JsonDiffPatch
 
             if (left.Type == JTokenType.Array)
             {
-                if (left.Children().SequenceEqual(right.Children()))        // TODO: Need a DEEP EQUALS HERE
+                if (left.Children().SequenceEqual(right.Children(), new JTokenEqualityComparer()))
                     yield break;
 
                 // No array insert or delete operators in jpatch (yet?)

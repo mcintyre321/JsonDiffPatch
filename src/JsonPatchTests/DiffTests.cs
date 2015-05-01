@@ -68,7 +68,14 @@ namespace Tavis.JsonPatch.Tests
             "{a:[1,2,3,4]}",
             ExpectedResult = "[]",
             TestName = "JsonPatch handles same array")]
-
+        [TestCase("{a:[1,2,3,{name:'a'}]}",
+            "{a:[1,2,3,{name:'a'}]}",
+            ExpectedResult = "[]",
+            TestName = "JsonPatch handles same array containing objects")]
+        //[TestCase("{a:[1,2,3,{name:'a'}]}",
+        //    "{a:[1,2,3,{name:'b'}]}",
+        //    ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/3/name\",\"value\":'b'}]",
+        //    TestName = "JsonPatch handles same array containing different objects")]
         public string JsonPatchesWorks(string leftString, string rightString)
         {
             var left = JToken.Parse(leftString);
@@ -87,5 +94,7 @@ namespace Tavis.JsonPatch.Tests
             var patchJson = patchDoc.ToString(Formatting.None);
             return patchJson;
         }
+
+       
     }
 }

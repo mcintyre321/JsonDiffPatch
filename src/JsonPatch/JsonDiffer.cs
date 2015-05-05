@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using JsonDiffPatch.DiffLib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -46,15 +48,28 @@ namespace JsonDiffPatch
 
             if (left.Type == JTokenType.Array)
             {
-                if (left.Children().SequenceEqual(right.Children(), new JTokenEqualityComparer()))
-                    yield break;
-
-                // No array insert or delete operators in jpatch (yet?)
-                yield return JsonDiffer.Replace(path, "", right);
-                yield break;
+                Operation prev = null;
+                foreach (var operation in ProcessArray(left, right, path))
+                {
+                        var prevRemove = prev as RemoveOperation;
+                        var add = operation as AddOperation;
+                        if (prevRemove != null && add != null && add.Path.ToString() == prevRemove.Path.ToString())
+                        {
+                            yield return Replace(add.Path.ToString(), "", add.Value);
+                            prev = null;
+                        }
+                        else
+                        {
+                            if (prev != null) yield return prev;
+                            prev = operation;
+                        }
+                }
+                if (prev != null)
+                {
+                    yield return prev;
+                }
             }
-
-            if (left.Type == JTokenType.Object)
+            else if (left.Type == JTokenType.Object)
             {
                 var lprops = ((IDictionary<string, JToken>)left).OrderBy(p => p.Key);
                 var rprops = ((IDictionary<string, JToken>)right).OrderBy(p => p.Key);
@@ -89,6 +104,58 @@ namespace JsonDiffPatch
                 else
                     yield return JsonDiffer.Replace(path, "", right);
             }
+        }
+
+        private static IEnumerable<Operation> ProcessArray(JToken left, JToken right, string path)
+        {
+            var differ = new PatienceSequenceMatcher<JToken>(new JTokenEqualityComparer()).CreateDifferencer();
+
+            var leftList = left.ToList();
+            var differences = differ.FindDifferences(leftList, right.ToList());
+            if (differences.Any())
+            {
+                foreach (var di in differences)
+                {
+                    var sequence = di.SubSequence;
+                    switch (di.Operation)
+                    {
+                        case DifferenceOperation.Equal:
+                            break;
+                            ;
+                        case DifferenceOperation.Inserted:
+                            for (var i = 0; i < sequence.RightLength; i++)
+                            {
+                                yield return JsonDiffer.Add(path, sequence.RightIndex.ToString(), right[i + sequence.RightIndex]);
+                            }
+                            break;
+                        case DifferenceOperation.Removed:
+                            if (sequence.LeftLength == leftList.Count)
+                            {
+                                yield return JsonDiffer.Replace(path, "", right);
+                                yield break;
+                            }
+                            else
+                            {
+                                for (var i = 0; i < sequence.LeftLength; i++)
+                                {
+                                    yield return Remove(path, sequence.LeftIndex.ToString());
+                                }
+                            }
+                            break;
+                        case DifferenceOperation.Replaced:
+                            for (var i = 0; i < sequence.LeftLength; i++)
+                            {
+                                yield return Replace(path, sequence.LeftIndex.ToString(), right[sequence.RightIndex]);
+                            }
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                }
+            }
+            //// No array insert or delete operators in jpatch (yet?)
+            //yield return JsonDiffer.Replace(path, "", right);
+            yield break;
         }
 
         private class MatchesKey : IEqualityComparer<KeyValuePair<string, JToken>>

@@ -72,6 +72,10 @@ namespace Tavis.JsonPatch.Tests
             "{a:[1,2,3,{name:'a'}]}",
             ExpectedResult = "[]",
             TestName = "JsonPatch handles same array containing objects")]
+        [TestCase("{a:[1,2,3,{name:'a'},4,5]}",
+          "{a:[1,2,3,{name:'b'},4,5]}",
+          ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/3\",\"value\":{\"name\":\"b\"}}]",
+          TestName = "Replaces array items")]
         //[TestCase("{a:[1,2,3,{name:'a'}]}",
         //    "{a:[1,2,3,{name:'b'}]}",
         //    ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/3/name\",\"value\":'b'}]",

@@ -25,16 +25,27 @@ namespace JsonDiffPatch
         {
             JToken token = null;
             JObject parenttoken = null;
+            var propertyName = operation.Path.ToString().Split('/').LastOrDefault();
             try
             {
-                if (operation.Path.IsNewPointer())
+                var parentArray = operation.Path.ParentPointer.Find(target) as JArray;
+
+                if (parentArray == null || propertyName == "-")
                 {
-                    var parentPointer = operation.Path.ParentPointer;
-                    token = parentPointer.Find(target) as JArray;
+                    if (operation.Path.IsNewPointer())
+                    {
+                        var parentPointer = operation.Path.ParentPointer;
+                        token = parentPointer.Find(target) as JArray;
+                    }
+                    else
+                    {
+                        token = operation.Path.Find(target);
+                    }
                 }
                 else
                 {
-                    token = operation.Path.Find(target);
+                    parentArray.Insert(int.Parse(propertyName), operation.Value);
+                    return;
                 }
             }
             catch (ArgumentException)
@@ -45,11 +56,12 @@ namespace JsonDiffPatch
 
             if (token == null && parenttoken != null)
             {
-                parenttoken.Add(operation.Path.ToString().Split('/').Last(), operation.Value);
+                parenttoken.Add(propertyName, operation.Value);
             }
             else if (token is JArray)
             {
                 var array = token as JArray;
+                
                 array.Add(operation.Value);
             }
             else if (token.Parent is JProperty)

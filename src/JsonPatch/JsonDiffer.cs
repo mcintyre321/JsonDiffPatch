@@ -240,12 +240,15 @@ namespace JsonDiffPatch
 
         public static bool HaveEqualIds(JToken x, JToken y)
         {
-            var xIdToken = x["id"];
-            var yIdToken = y["id"];
+            if (x.Type == JTokenType.Object && y.Type == JTokenType.Object)
+            {
+                var xIdToken = x["id"];
+                var yIdToken = y["id"];
 
-            var xId = xIdToken != null ? xIdToken.Value<string>() : null;
-            var yId = yIdToken != null ? yIdToken.Value<string>() : null;
-            return xId != null && xId == yId;
+                var xId = xIdToken != null ? xIdToken.Value<string>() : null;
+                var yId = yIdToken != null ? yIdToken.Value<string>() : null;
+                return xId != null && xId == yId;
+            }
         }
     }
 }

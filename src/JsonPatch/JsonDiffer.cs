@@ -229,7 +229,7 @@ namespace JsonDiffPatch
 
         public int GetHashCode(JToken obj)
         {
-            if (_enableIdCheck)
+            if (_enableIdCheck && obj.Type == JTokenType.Object)
             {
                 var xIdToken = obj["id"];
                 var xId = xIdToken != null && xIdToken.HasValues ? xIdToken.Value<string>() : null;

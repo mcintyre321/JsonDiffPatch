@@ -249,6 +249,7 @@ namespace JsonDiffPatch
                 var yId = yIdToken != null ? yIdToken.Value<string>() : null;
                 return xId != null && xId == yId;
             }
+            return false;
         }
     }
 }

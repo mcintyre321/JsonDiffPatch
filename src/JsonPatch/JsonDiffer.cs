@@ -212,7 +212,7 @@ namespace JsonDiffPatch
 
         public bool Equals(JToken x, JToken y)
         {
-            if (_enableIdCheck)
+            if (_enableIdCheck && x.Type == JTokenType.Object && y.Type == JTokenType.Object)
             {
                 var xIdToken = x["id"];
                 var yIdToken = y["id"];

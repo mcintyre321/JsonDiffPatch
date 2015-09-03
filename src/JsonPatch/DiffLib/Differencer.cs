@@ -63,11 +63,11 @@ namespace JsonDiffPatch.DiffLib
             var lastLeftIndex = -1;
             var lastRightIndex = -1;
 
-            foreach (var item in matches)
+            foreach (var subSequence in matches)
             {
                 if (lastLeftIndex != -1)
                 {
-                    var diff = item.LeftIndex - lastLeftIndex;
+                    var diff = subSequence.LeftIndex - lastLeftIndex;
                     if (diff > 0)
                         yield return new DifferenceInstruction(DifferenceOperation.Removed,
                             new SubSequence(lastLeftIndex, 0, diff, 0));
@@ -75,19 +75,19 @@ namespace JsonDiffPatch.DiffLib
 
                 if (lastRightIndex != -1)
                 {
-                    var diff = item.RightIndex - lastRightIndex;
+                    var diff = subSequence.RightIndex - lastRightIndex;
                     if (diff > 0)
                         yield return new DifferenceInstruction(DifferenceOperation.Inserted,
                             new SubSequence(0, lastRightIndex, 0, diff));
                 }
 
-                if (item.LeftLength > 0 && item.LeftLength == item.RightLength)
+                if (subSequence.LeftLength > 0 && subSequence.LeftLength == subSequence.RightLength)
                 {
-                    yield return new DifferenceInstruction(DifferenceOperation.Equal, item);
+                    yield return new DifferenceInstruction(DifferenceOperation.Equal, subSequence);
                 }
 
-                lastLeftIndex = item.LeftEndIndex + 1;
-                lastRightIndex = item.RightEndIndex + 1;
+                lastLeftIndex = subSequence.LeftEndIndex + 1;
+                lastRightIndex = subSequence.RightEndIndex + 1;
             }
 
             if (lastLeftIndex < left.Count)

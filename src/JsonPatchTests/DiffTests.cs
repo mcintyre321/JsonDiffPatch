@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using JsonDiffPatch;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -85,7 +86,7 @@ namespace Tavis.JsonPatch.Tests
             var left = JToken.Parse(leftString);
             var right = JToken.Parse(rightString);
 
-            var patchDoc = new JsonDiffer().Diff(left, right);
+            var patchDoc = new JsonDiffer().Diff(left, right, false);
             var patcher = new JsonPatcher();
             patcher.Patch(ref left, patchDoc);
 
@@ -99,6 +100,15 @@ namespace Tavis.JsonPatch.Tests
             return patchJson;
         }
 
-       
+        [Test]
+        public void ComplexExampleWithDeepArrayChange()
+        {
+            var scene1 = JToken.Parse(File.ReadAllText(@".\samples\scene1.json"));
+            var scene2 = JToken.Parse(File.ReadAllText(@".\samples\scene2.json"));
+            var patchDoc = new JsonDiffer().Diff(scene1, scene2, true);
+            Assert.AreEqual("[{\"op\":\"remove\",\"path\":\"/entities/1\"}]", patchDoc.ToString(Formatting.None));
+        }
+
+
     }
 }

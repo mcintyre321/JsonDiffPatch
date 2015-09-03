@@ -39,21 +39,27 @@ namespace JsonDiffPatch
             return Parse(reader.ReadToEnd());
         }
 
+        public static PatchDocument Load(JArray document)
+        {
+            var root = new PatchDocument();
+
+            if (document != null)
+            {
+                foreach (var jOperation in document.Children().Cast<JObject>())
+                {
+                    var op = Operation.Build(jOperation);
+                    root.AddOperation(op);
+                }
+            }
+            
+            return root;
+        }
+        
         public static PatchDocument Parse(string jsondocument)
         {
             var root = JToken.Parse(jsondocument) as JArray;
-            var document = new PatchDocument();
-
-
-            if (root != null)
-            {
-                foreach (var jOperation in root.Children().Cast<JObject>())
-                {
-                    var op = Operation.Build(jOperation);
-                    document.AddOperation(op);
-                }
-            }
-            return document;
+            
+            return Load(root);
         }
 
         public static Operation CreateOperation(string op)

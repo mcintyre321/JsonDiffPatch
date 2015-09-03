@@ -124,11 +124,12 @@ namespace JsonDiffPatch
                         case DifferenceOperation.Equal:
                             for(var i=0;i<di.SubSequence.LeftLength;i++)
                             {
-                                var leftToken = leftList[di.SubSequence.LeftIndex + i];
+                                var leftIndex = di.SubSequence.LeftIndex + i;
+                                var leftToken = leftList[leftIndex];
                                 var rightToken = rightList[di.SubSequence.RightIndex + i];
                                 if (useIdPropertyToDetermineEquality && CustomCheckEqualityComparer.HaveEqualIds(leftToken, rightToken))
                                 {
-                                    foreach (var diff in CalculatePatch(leftToken, rightToken, useIdPropertyToDetermineEquality))
+                                    foreach (var diff in CalculatePatch(leftToken, rightToken, useIdPropertyToDetermineEquality, path + "/" + (i + leftIndex)))
                                     {
                                         yield return diff;
                                     }

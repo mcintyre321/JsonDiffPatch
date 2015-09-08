@@ -57,16 +57,8 @@
   <ItemGroup>
     <Compile Include="AbstractPatcher.cs" />
     <Compile Include="AddOperation.cs" />
+    <Compile Include="ArrayLcs.cs" />
     <Compile Include="CopyOperation.cs" />
-    <Compile Include="DiffLib\DifferenceInstruction.cs" />
-    <Compile Include="DiffLib\DifferenceOperation.cs" />
-    <Compile Include="DiffLib\Differencer.cs" />
-    <Compile Include="DiffLib\IDifferenceFormatter.cs" />
-    <Compile Include="DiffLib\IDifferenceSimplifier.cs" />
-    <Compile Include="DiffLib\ISequenceMatcher.cs" />
-    <Compile Include="DiffLib\PatienceSequenceMatcher.cs" />
-    <Compile Include="DiffLib\SubList.cs" />
-    <Compile Include="DiffLib\SubSequence.cs" />
     <Compile Include="JsonDiffer.cs" />
     <Compile Include="JsonPatcher.cs" />
     <Compile Include="MoveOperation.cs" />

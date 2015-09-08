@@ -103,13 +103,21 @@ namespace Tavis.JsonPatch.Tests
         [Test]
         public void ComplexExampleWithDeepArrayChange()
         {
-            var scene1 = JToken.Parse(File.ReadAllText(@".\samples\scene1.json"));
-            var scene2 = JToken.Parse(File.ReadAllText(@".\samples\scene2.json"));
-            var patchDoc = new JsonDiffer().Diff(scene1, scene2, true);
-            Assert.AreEqual("[{\"op\":\"remove\",\"path\":\"/items/0/entities/1\"}]", patchDoc.ToString(Formatting.None));
-            var patcher = new JsonPatcher();
-            patcher.Patch(ref scene1, patchDoc);
-            Assert.True(JToken.DeepEquals(scene1, scene2));
+            
+            var leftPath = @".\samples\scene{0}a.json";
+            var rightPath = @".\samples\scene{0}b.json";
+            var i = 2;
+            while(File.Exists(string.Format(leftPath, i)))
+            {
+                var scene1 = JToken.Parse(File.ReadAllText(string.Format(leftPath, i)));
+                var scene2 = JToken.Parse(File.ReadAllText(string.Format(rightPath, i)));
+                var patchDoc = new JsonDiffer().Diff(scene1, scene2, true);
+                //Assert.AreEqual("[{\"op\":\"remove\",\"path\":\"/items/0/entities/1\"}]",
+                var patcher = new JsonPatcher();
+                patcher.Patch(ref scene1, patchDoc);
+                Assert.True(JToken.DeepEquals(scene1, scene2));
+                i++;
+            }
         }
 
 

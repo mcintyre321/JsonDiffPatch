@@ -69,10 +69,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoveTests.cs" />
     <Compile Include="ReplaceTests.cs" />
-    <None Include="Samples\scene2.json">
+    <None Include="Samples\scene2a.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Samples\scene1.json">
+    <None Include="Samples\scene2b.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\scene1b.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\scene1a.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Compile Include="TestTests.cs" />

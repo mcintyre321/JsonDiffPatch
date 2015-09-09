@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="AddTests.cs" />
     <Compile Include="CopyTests.cs" />
+    <Compile Include="DiffTests2.cs" />
     <Compile Include="PatchTests2.cs" />
     <Compile Include="DiffTests.cs" />
     <Compile Include="MoveTests.cs" />

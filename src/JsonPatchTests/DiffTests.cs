@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using JsonDiffPatch;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -81,6 +80,11 @@ namespace Tavis.JsonPatch.Tests
           "{a:[]}",
           ExpectedResult = "[]",
           TestName = "Empty array gives no operations")]
+        [TestCase("['a', 'b', 'c']",
+            "['a', 'd', 'c']",
+            ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/1\",\"value\":\"d\"}]"
+            , TestName = "Inserts item in centre of array correctly")]
+
         //[TestCase("{a:[1,2,3,{name:'a'}]}",
         //    "{a:[1,2,3,{name:'b'}]}",
         //    ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/3/name\",\"value\":'b'}]",
@@ -96,34 +100,10 @@ namespace Tavis.JsonPatch.Tests
 
 
             Assert.True(JToken.DeepEquals(left, right));
-            //var patchedLeft = left.ToString(Formatting.None);
-            //var expected = right.ToString(Formatting.None);
             //Assert.AreEqual(expected, patchedLeft);
 
             var patchJson = patchDoc.ToString(Formatting.None);
             return patchJson;
         }
-
-        [Test]
-        public void ComplexExampleWithDeepArrayChange()
-        {
-            
-            var leftPath = @".\samples\scene{0}a.json";
-            var rightPath = @".\samples\scene{0}b.json";
-            var i = 1;
-            while(File.Exists(string.Format(leftPath, i)))
-            {
-                var scene1 = JToken.Parse(File.ReadAllText(string.Format(leftPath, i)));
-                var scene2 = JToken.Parse(File.ReadAllText(string.Format(rightPath, i)));
-                var patchDoc = new JsonDiffer().Diff(scene1, scene2, true);
-                //Assert.AreEqual("[{\"op\":\"remove\",\"path\":\"/items/0/entities/1\"}]",
-                var patcher = new JsonPatcher();
-                patcher.Patch(ref scene1, patchDoc);
-                Assert.True(JToken.DeepEquals(scene1, scene2));
-                i++;
-            }
-        }
-
-
     }
 }

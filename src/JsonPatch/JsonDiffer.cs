@@ -173,7 +173,7 @@ namespace JsonDiffPatch
             {
                 yield return new RemoveOperation()
                 {
-                    Path = new JsonPointer(path + "/" + (commonTail + 1))
+                    Path = new JsonPointer(path + "/" + (commonHead ))
                 };
             }
             for (int i = 0; i < rightMiddle.Length; i++)

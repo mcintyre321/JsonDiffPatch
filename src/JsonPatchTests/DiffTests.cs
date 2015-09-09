@@ -77,6 +77,10 @@ namespace Tavis.JsonPatch.Tests
           "{a:[1,2,3,{name:'b'},4,5]}",
           ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/3\",\"value\":{\"name\":\"b\"}}]",
           TestName = "Replaces array items")]
+        [TestCase("{a:[]}",
+          "{a:[]}",
+          ExpectedResult = "[]",
+          TestName = "Empty array gives no operations")]
         //[TestCase("{a:[1,2,3,{name:'a'}]}",
         //    "{a:[1,2,3,{name:'b'}]}",
         //    ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/3/name\",\"value\":'b'}]",
@@ -106,7 +110,7 @@ namespace Tavis.JsonPatch.Tests
             
             var leftPath = @".\samples\scene{0}a.json";
             var rightPath = @".\samples\scene{0}b.json";
-            var i = 2;
+            var i = 1;
             while(File.Exists(string.Format(leftPath, i)))
             {
                 var scene1 = JToken.Parse(File.ReadAllText(string.Format(leftPath, i)));

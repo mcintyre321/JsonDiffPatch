@@ -69,7 +69,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoveTests.cs" />
     <Compile Include="ReplaceTests.cs" />
+    <None Include="Samples\scene3a.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Samples\scene2a.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\scene3b.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Samples\scene2b.json">

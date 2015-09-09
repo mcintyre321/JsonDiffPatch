@@ -119,6 +119,8 @@ namespace JsonDiffPatch
         {
             var comparer = new CustomCheckEqualityComparer(useIdPropertyToDetermineEquality, new JTokenEqualityComparer());
 
+           
+
 
             int commonHead = 0;
             int commonTail = 0;
@@ -126,7 +128,7 @@ namespace JsonDiffPatch
             var len1 = array1.Length;
             var array2 = right.ToArray();
             var len2 = array2.Length;
-
+        //    if (len1 == 0 && len2 ==0 ) yield break;
             while (commonHead < len1 && commonHead < len2)
             {
                 if (comparer.Equals(array1[commonHead], array2[commonHead]) == false) break;
@@ -154,7 +156,7 @@ namespace JsonDiffPatch
                 commonTail++;
             }
 
-            if (commonHead == 0 && commonTail == 0)
+            if (commonHead == 0 && commonTail == 0 && len2 > 0 && len1 > 0)
             {
                 yield return new ReplaceOperation()
                 {

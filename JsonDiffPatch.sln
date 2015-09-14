@@ -3,16 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonDiffPatch", "src\JsonPatch\JsonDiffPatch.csproj", "{F28B8328-85BE-4048-AA16-0C069095FB1F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tavis.JsonPatch.Tests", "src\JsonPatchTests\Tavis.JsonPatch.Tests.csproj", "{1FCBC3F6-73A3-4686-9A8B-A7709CF1C198}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5DD53D6F-125D-456B-8484-7F3222C0A890}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonDiffPatch", "JsonDiffPatch\JsonDiffPatch.csproj", "{F28B8328-85BE-4048-AA16-0C069095FB1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonDiffPatch.Tests", "JsonDiffPatchTests\JsonDiffPatch.Tests.csproj", "{1FCBC3F6-73A3-4686-9A8B-A7709CF1C198}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

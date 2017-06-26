@@ -1,13 +1,13 @@
 ﻿using System;
 using JsonDiffPatch;
 using Newtonsoft.Json.Linq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Tavis.JsonPatch.Tests
 {
     public class TestTests
     {
-        [Fact]
+        [Test]
         public void Test_a_value()
         {
 

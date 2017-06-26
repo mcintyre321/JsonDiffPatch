@@ -1,12 +1,12 @@
 ﻿using System;
 using JsonDiffPatch;
-using Xunit;
+using NUnit.Framework;
 
 namespace Tavis.JsonPatch.Tests
 {
     public class RemoveTests
     {
-        [Fact]
+        [Test]
         public void Remove_a_property()
         {
 
@@ -22,7 +22,7 @@ namespace Tavis.JsonPatch.Tests
             Assert.Throws(typeof(ArgumentException), () => { pointer.Find(sample); });
         }
 
-        [Fact]
+        [Test]
         public void Remove_an_array_element()
         {
 

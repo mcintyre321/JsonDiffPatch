@@ -1,12 +1,12 @@
 ﻿using JsonDiffPatch;
 using Newtonsoft.Json.Linq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Tavis.JsonPatch.Tests
 {
     public class ReplaceTests
     {
-        [Fact]
+        [Test]
         public void Replace_a_property_value_with_a_new_value()
         {
 
@@ -19,10 +19,10 @@ namespace Tavis.JsonPatch.Tests
 
             new JsonPatcher().Patch(ref sample, patchDocument);
 
-            Assert.Equal("Bob Brown", (string)pointer.Find(sample));
+            Assert.AreEqual("Bob Brown", (string)pointer.Find(sample));
         }
 
-        [Fact]
+        [Test]
         public void Replace_a_property_value_with_an_object()
         {
 
@@ -36,7 +36,7 @@ namespace Tavis.JsonPatch.Tests
             new JsonPatcher().Patch(ref sample, patchDocument);
 
             var newPointer = new JsonPointer("/books/0/author/hello");
-            Assert.Equal("world", (string)newPointer.Find(sample));
+            Assert.AreEqual("world", (string)newPointer.Find(sample));
         }
 
     }

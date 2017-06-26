@@ -1,12 +1,12 @@
 ﻿using JsonDiffPatch;
 using Newtonsoft.Json.Linq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Tavis.JsonPatch.Tests
 {
     public class CopyTests
     {
-        [Fact]
+        [Test]
         public void Copy_array_element()
         {
             var sample = PatchTests.GetSample2();
@@ -21,11 +21,11 @@ namespace Tavis.JsonPatch.Tests
             patcher.Patch(ref sample, patchDocument);
 
             var result = new JsonPointer("/books/2").Find(sample);
-            Assert.IsType(typeof(JObject), result);
+            Assert.IsInstanceOf(typeof(JObject), result);
 
         }
 
-        [Fact]
+        [Test]
         public void Copy_property()
         {
             var sample = PatchTests.GetSample2();
@@ -41,7 +41,7 @@ namespace Tavis.JsonPatch.Tests
             patcher.Patch(ref sample, patchDocument);
 
             var result = new JsonPointer("/books/1/ISBN").Find(sample);
-            Assert.Equal("21123123", result);
+            Assert.AreEqual("21123123", result.Value<string>());
         }
     }
 }

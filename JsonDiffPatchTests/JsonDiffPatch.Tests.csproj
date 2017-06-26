@@ -5,11 +5,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Samples\LoadTest1.json" />
+    <None Remove="Samples\scene1a.json" />
+    <None Remove="Samples\scene1b.json" />
+    <None Remove="Samples\scene2a.json" />
+    <None Remove="Samples\scene2b.json" />
+    <None Remove="Samples\scene3a.json" />
+    <None Remove="Samples\scene3b.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\LoadTest1.json" />
+    <EmbeddedResource Include="Samples\scene1a.json" />
+    <EmbeddedResource Include="Samples\scene1b.json" />
+    <EmbeddedResource Include="Samples\scene2a.json" />
+    <EmbeddedResource Include="Samples\scene2b.json" />
+    <EmbeddedResource Include="Samples\scene3a.json" />
+    <EmbeddedResource Include="Samples\scene3b.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NUnit" Version="3.7.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0-alpha1" />
-    <PackageReference Include="xunit" Version="2.3.0-beta3-build3705" />
   </ItemGroup>
 
   <ItemGroup>

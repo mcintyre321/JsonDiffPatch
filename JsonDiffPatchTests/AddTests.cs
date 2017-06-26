@@ -1,13 +1,13 @@
 ﻿using JsonDiffPatch;
 using Newtonsoft.Json.Linq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Tavis.JsonPatch.Tests
 {
     public class AddTests
     {
 
-        [Fact]
+        [Test]
         public void Add_an_array_element()
         {
 
@@ -23,11 +23,11 @@ namespace Tavis.JsonPatch.Tests
 
             var list = sample["books"] as JArray;
 
-            Assert.Equal(3, list.Count);
+            Assert.AreEqual(3, list.Count);
 
         }
 
-        [Fact]
+        [Test]
         public void Add_an_existing_member_property()  // Why isn't this replace?
         {
 
@@ -43,11 +43,11 @@ namespace Tavis.JsonPatch.Tests
 
 
             var result = (string)pointer.Find(sample);
-            Assert.Equal("Little Red Riding Hood", result);
+            Assert.AreEqual("Little Red Riding Hood", result);
 
         }
 
-        [Fact]
+        [Test]
         public void Add_a_non_existing_member_property()
         {
 
@@ -63,11 +63,11 @@ namespace Tavis.JsonPatch.Tests
 
 
             var result = (string)pointer.Find(sample);
-            Assert.Equal("213324234343", result);
+            Assert.AreEqual("213324234343", result);
 
         }
 
-        [Fact]
+        [Test]
         public void Add_a_non_existing_member_property_with_slash_character()
         {
 
@@ -83,11 +83,11 @@ namespace Tavis.JsonPatch.Tests
 
 
             var result = (string)pointer.Find(sample);
-            Assert.Equal("42", result);
+            Assert.AreEqual("42", result);
 
         }
 
-        [Fact]
+        [Test]
         public void Add_a_non_existing_member_property_with_tilda_character()
         {
 
@@ -103,7 +103,7 @@ namespace Tavis.JsonPatch.Tests
 
 
             var result = (string)pointer.Find(sample);
-            Assert.Equal("42", result);
+            Assert.AreEqual("42", result);
 
         }
     }

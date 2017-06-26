@@ -1,13 +1,13 @@
 ﻿using System.IO;
 using JsonDiffPatch;
 using Newtonsoft.Json.Linq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Tavis.JsonPatch.Tests
 {
     public class PatchTests
     {
-        [Fact]
+        [Test]
         public void CreateEmptyPatch()
         {
 
@@ -17,23 +17,25 @@ namespace Tavis.JsonPatch.Tests
             var patchDocument = new PatchDocument();
             new JsonPatcher().Patch(ref sample, patchDocument);
 
-            Assert.Equal(sampletext,sample.ToString());
+            Assert.AreEqual(sampletext,sample.ToString());
         }
 
 
-        [Fact]
+        [Test]
         public void LoadPatch1()
         {
+            var names = this.GetType()
+                    .Assembly.GetManifestResourceNames();
             var patchDoc =
                 PatchDocument.Load(this.GetType()
-                    .Assembly.GetManifestResourceStream(this.GetType(), "Samples.LoadTest1.json"));
+                    .Assembly.GetManifestResourceStream("JsonDiffPatch.Tests.Samples.LoadTest1.json"));
 
             Assert.NotNull(patchDoc);
-            Assert.Equal(6,patchDoc.Operations.Count);
+            Assert.AreEqual(6,patchDoc.Operations.Count);
         }
 
 
-        [Fact]
+        [Test]
         public void TestExample1()
         {
             var targetDoc = JToken.Parse("{ 'foo': 'bar'}");
@@ -52,7 +54,7 @@ namespace Tavis.JsonPatch.Tests
 
   
 
-        [Fact]
+        [Test]
         public void SerializePatchDocument()
         {
             var patchDoc = new PatchDocument( new Operation[]
@@ -71,7 +73,7 @@ namespace Tavis.JsonPatch.Tests
             var jOutput = JToken.Parse(output);
 
             var jExpected = JToken.Parse(new StreamReader(this.GetType()
-                .Assembly.GetManifestResourceStream(this.GetType(), "Samples.LoadTest1.json")).ReadToEnd());
+                .Assembly.GetManifestResourceStream("JsonDiffPatch.Tests.Samples.LoadTest1.json")).ReadToEnd());
             Assert.True(JToken.DeepEquals(jExpected,jOutput));
         }
 

@@ -1,13 +1,13 @@
 ﻿using JsonDiffPatch;
 using Newtonsoft.Json.Linq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Tavis.JsonPatch.Tests
 {
     public class MoveTests
     {
 
-        [Fact]
+        [Test]
         public void Move_property()
         {
             var sample = PatchTests.GetSample2();
@@ -23,10 +23,10 @@ namespace Tavis.JsonPatch.Tests
 
 
             var result = (string)topointer.Find(sample);
-            Assert.Equal("F. Scott Fitzgerald", result);
+            Assert.AreEqual("F. Scott Fitzgerald", result);
         }
 
-        [Fact]
+        [Test]
         public void Move_array_element()
         {
             var sample = PatchTests.GetSample2();
@@ -42,7 +42,7 @@ namespace Tavis.JsonPatch.Tests
 
 
             var result = topointer.Find(sample);
-            Assert.IsType(typeof(JObject), result);
+            Assert.IsInstanceOf(typeof(JObject), result);
         }
 
 

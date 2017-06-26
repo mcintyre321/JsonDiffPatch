@@ -25,14 +25,16 @@ namespace JsonDiffPatch
         {
             JToken token = null;
             JObject parenttoken = null;
-            var propertyName = operation.Path.ToString().Split('/').LastOrDefault();
+            var parentPath = operation.Path.ParentPointer.ToString();
+            int index = parentPath == "/" ? parentPath.Length : parentPath.Length + 1;
+            var propertyName = operation.Path.ToString().Substring(index);
             try
             {
                 var parentArray = operation.Path.ParentPointer.Find(target) as JArray;
-
-                if (parentArray == null || propertyName == "-")
+                bool isNewPointer = operation.Path.IsNewPointer();
+                if (parentArray == null || isNewPointer)
                 {
-                    if (operation.Path.IsNewPointer())
+                    if (isNewPointer)
                     {
                         var parentPointer = operation.Path.ParentPointer;
                         token = parentPointer.Find(target) as JArray;

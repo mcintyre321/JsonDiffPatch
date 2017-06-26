@@ -48,7 +48,7 @@ namespace Tavis.JsonPatch.Tests
         }
 
         [Fact]
-        public void Add_an_non_existing_member_property()  // Why isn't this replace?
+        public void Add_a_non_existing_member_property()
         {
 
             var sample = PatchTests.GetSample2();
@@ -67,5 +67,44 @@ namespace Tavis.JsonPatch.Tests
 
         }
 
+        [Fact]
+        public void Add_a_non_existing_member_property_with_slash_character()
+        {
+
+            var sample = PatchTests.GetSample2();
+
+            var patchDocument = new PatchDocument();
+            var pointer = new JsonPointer("/books/0/b~1c");
+
+            patchDocument.AddOperation(new AddOperation() { Path = pointer, Value = new JValue("42") });
+
+            var patcher = new JsonPatcher();
+            patcher.Patch(ref sample, patchDocument);
+
+
+            var result = (string)pointer.Find(sample);
+            Assert.Equal("42", result);
+
+        }
+
+        [Fact]
+        public void Add_a_non_existing_member_property_with_tilda_character()
+        {
+
+            var sample = PatchTests.GetSample2();
+
+            var patchDocument = new PatchDocument();
+            var pointer = new JsonPointer("/books/0/b~0c");
+
+            patchDocument.AddOperation(new AddOperation() { Path = pointer, Value = new JValue("42") });
+
+            var patcher = new JsonPatcher();
+            patcher.Patch(ref sample, patchDocument);
+
+
+            var result = (string)pointer.Find(sample);
+            Assert.Equal("42", result);
+
+        }
     }
 }

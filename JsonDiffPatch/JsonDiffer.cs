@@ -169,6 +169,23 @@ namespace JsonDiffPatch
 
             var leftMiddle = array1.Skip(commonHead).Take(array1.Length - commonTail - commonHead).ToArray();
             var rightMiddle = array2.Skip(commonHead ).Take(array2.Length - commonTail - commonHead).ToArray();
+
+            // Just a replace of values!
+            if (leftMiddle.Length == rightMiddle.Length)
+            {
+                for (int i = 0; i < leftMiddle.Length; i++)
+                {
+                    foreach (var operation in CalculatePatch(leftMiddle[i], rightMiddle[i], useIdPropertyToDetermineEquality, path + "/" + commonHead))
+                    {
+                        yield return operation;
+                    }
+                }
+
+                yield break;
+            }
+
+            
+
             foreach (var jToken in leftMiddle)
             {
                 yield return new RemoveOperation()

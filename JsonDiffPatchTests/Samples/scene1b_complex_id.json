@@ -1,0 +1,16 @@
+﻿{
+  "items": [
+    {
+      "id": {
+        "internal": "1234",
+        "external": "viewpoint"
+      },
+      "entities": [
+        {
+          "name": "Donn Crimmins (sdf)"
+        }
+      ],
+      "type": "Viewpoint"
+    }
+  ]
+}

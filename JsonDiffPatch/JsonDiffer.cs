@@ -45,8 +45,7 @@ namespace JsonDiffPatch
             return Build("replace", path, key, value);
         }
 
-        internal static IEnumerable<Operation> CalculatePatch(JToken left, JToken right, bool useIdToDetermineEquality,
-            string path = "")
+        internal static IEnumerable<Operation> CalculatePatch(JToken left, JToken right, CompareOptions compareOptions, string path = "")
         {
             if (left.Type != right.Type)
             {
@@ -57,7 +56,7 @@ namespace JsonDiffPatch
             if (left.Type == JTokenType.Array)
             {
                 Operation prev = null;
-                foreach (var operation in ProcessArray(left, right, path, useIdToDetermineEquality))
+                foreach (var operation in ProcessArray(left, right, path, compareOptions))
                 {
                     var prevRemove = prev as RemoveOperation;
                     var add = operation as AddOperation;
@@ -98,7 +97,7 @@ namespace JsonDiffPatch
                 foreach (var match in zipped)
                 {
                     string newPath = path + "/" + match.key;
-                    foreach (var patch in CalculatePatch(match.left, match.right, useIdToDetermineEquality, newPath))
+                    foreach (var patch in CalculatePatch(match.left, match.right, compareOptions, newPath))
                         yield return patch;
                 }
                 yield break;
@@ -114,13 +113,9 @@ namespace JsonDiffPatch
             }
         }
 
-        private static IEnumerable<Operation> ProcessArray(JToken left, JToken right, string path,
-            bool useIdPropertyToDetermineEquality)
+        private static IEnumerable<Operation> ProcessArray(JToken left, JToken right, string path, CompareOptions compareOptions)
         {
-            var comparer = new CustomCheckEqualityComparer(useIdPropertyToDetermineEquality, new JTokenEqualityComparer());
-
-           
-
+            var comparer = new CustomCheckEqualityComparer(compareOptions, new JTokenEqualityComparer());
 
             int commonHead = 0;
             int commonTail = 0;
@@ -134,7 +129,7 @@ namespace JsonDiffPatch
                 if (comparer.Equals(array1[commonHead], array2[commonHead]) == false) break;
 
                 //diff and yield objects here
-                foreach (var operation in CalculatePatch(array1[commonHead], array2[commonHead], useIdPropertyToDetermineEquality, path + "/" + commonHead))
+                foreach (var operation in CalculatePatch(array1[commonHead], array2[commonHead], compareOptions, path + "/" + commonHead))
                 {
                     yield return operation;
                 }
@@ -149,7 +144,7 @@ namespace JsonDiffPatch
 
                 var index1 = len1 - 1 - commonTail;
                 var index2 = len2 - 1 - commonTail;
-                foreach (var operation in CalculatePatch(array1[index1], array2[index2], useIdPropertyToDetermineEquality, path + "/" + index1))
+                foreach (var operation in CalculatePatch(array1[index1], array2[index2], compareOptions, path + "/" + index1))
                 {
                     yield return operation;
                 }
@@ -175,7 +170,7 @@ namespace JsonDiffPatch
             {
                 for (int i = 0; i < leftMiddle.Length; i++)
                 {
-                    foreach (var operation in CalculatePatch(leftMiddle[i], rightMiddle[i], useIdPropertyToDetermineEquality, path + "/" + commonHead))
+                    foreach (var operation in CalculatePatch(leftMiddle[i], rightMiddle[i], compareOptions, path + "/" + commonHead))
                     {
                         yield return operation;
                     }
@@ -332,67 +327,89 @@ namespace JsonDiffPatch
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="@from"></param>
+        /// <param name="from"></param>
         /// <param name="to"></param>
-        /// <param name="useIdPropertyToDetermineEquality">Use id propety on array members to determine equality</param>
         /// <returns></returns>
+        public PatchDocument Diff(JToken @from, JToken to)
+        {
+            return new PatchDocument(CalculatePatch(@from, to, CompareOptions.Default).ToArray());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="compareOptions">Use id comparison on array members to determine equality</param>
+        /// <returns></returns>
+        public PatchDocument Diff(JToken @from, JToken to, CompareOptions compareOptions)
+        {
+            if (compareOptions == null)
+                throw new ArgumentNullException(nameof(compareOptions));
+
+            return new PatchDocument(CalculatePatch(@from, to, compareOptions).ToArray());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="useIdPropertyToDetermineEquality">Use id property on array members to determine equality</param>
+        /// <returns></returns>
+        [Obsolete("Use Diff(@from, to, compareOptions) instead. Kept for backwards compatibility only.")]
         public PatchDocument Diff(JToken @from, JToken to, bool useIdPropertyToDetermineEquality)
         {
-            return new PatchDocument(CalculatePatch(@from, to, useIdPropertyToDetermineEquality).ToArray());
+            CompareOptions compareOptions = new CompareOptions(useIdPropertyToDetermineEquality);
+
+            return new PatchDocument(CalculatePatch(@from, to, compareOptions).ToArray());
         }
     }
 
     internal class CustomCheckEqualityComparer : IEqualityComparer<JToken>
     {
-        private readonly bool _enableIdCheck;
+        private readonly CompareOptions _compareOptions;
         private readonly IEqualityComparer<JToken> _inner;
 
-        public CustomCheckEqualityComparer(bool enableIdCheck, IEqualityComparer<JToken> inner)
+        public CustomCheckEqualityComparer(CompareOptions compareOptions, IEqualityComparer<JToken> inner)
         {
-            _enableIdCheck = enableIdCheck;
+            _compareOptions = compareOptions;
             _inner = inner;
         }
 
         public bool Equals(JToken x, JToken y)
         {
-            if (_enableIdCheck && x.Type == JTokenType.Object && y.Type == JTokenType.Object)
+            if (_compareOptions.EnableIdentifierCheck && x.Type == JTokenType.Object && y.Type == JTokenType.Object)
             {
-                var xIdToken = x["id"];
-                var yIdToken = y["id"];
+                var xIdToken = x[_compareOptions.IdentifierProperty];
+                var yIdToken = y[_compareOptions.IdentifierProperty];
 
-                var xId = xIdToken != null ? xIdToken.Value<string>() : null;
-                var yId = yIdToken != null ? yIdToken.Value<string>() : null;
-                if (xId != null && xId == yId)
+                if (xIdToken != null && yIdToken != null)
                 {
-                    return true;
+                    if (xIdToken.HasValues && y.HasValues)
+                        return _inner.Equals(xIdToken, yIdToken);
+
+                    if (xIdToken.HasValues != yIdToken.HasValues)
+                        return false;
                 }
+
+                var xId = xIdToken?.Value<string>();
+                var yId = yIdToken?.Value<string>();
+
+                return (xId != null && xId == yId);
             }
             return _inner.Equals(x, y);
         }
 
         public int GetHashCode(JToken obj)
         {
-            if (_enableIdCheck && obj.Type == JTokenType.Object)
+            if (_compareOptions.EnableIdentifierCheck && obj.Type == JTokenType.Object)
             {
-                var xIdToken = obj["id"];
+                var xIdToken = obj[_compareOptions.IdentifierProperty];
                 var xId = xIdToken != null && xIdToken.HasValues ? xIdToken.Value<string>() : null;
                 if (xId != null) return xId.GetHashCode() + _inner.GetHashCode(obj);
             }
             return _inner.GetHashCode(obj);
-        }
-
-        public static bool HaveEqualIds(JToken x, JToken y)
-        {
-            if (x.Type == JTokenType.Object && y.Type == JTokenType.Object)
-            {
-                var xIdToken = x["id"];
-                var yIdToken = y["id"];
-
-                var xId = xIdToken != null ? xIdToken.Value<string>() : null;
-                var yId = yIdToken != null ? yIdToken.Value<string>() : null;
-                return xId != null && xId == yId;
-            }
-            return false;
         }
     }
 }

@@ -1,0 +1,19 @@
+﻿{
+  "items": [
+    {
+      "id": {
+        "external": "viewpoint",
+        "internal": "1234"
+      },
+      "entities": [
+        {
+          "name": "Donn Crimmins (sdf)"
+        },
+        {
+          "name": "Chester Westberg"
+        }
+      ],
+      "type": "Viewpoint"
+    }
+  ]
+}

@@ -7,21 +7,83 @@
   <ItemGroup>
     <None Remove="Samples\LoadTest1.json" />
     <None Remove="Samples\scene1a.json" />
+    <None Remove="Samples\scene1a_complex_id.json" />
+    <None Remove="Samples\scene1a_otherid.json" />
     <None Remove="Samples\scene1b.json" />
+    <None Remove="Samples\scene1b_complex_id.json" />
+    <None Remove="Samples\scene1b_otherid.json" />
     <None Remove="Samples\scene2a.json" />
+    <None Remove="Samples\scene2a_complex_id.json" />
+    <None Remove="Samples\scene2a_otherid.json" />
     <None Remove="Samples\scene2b.json" />
+    <None Remove="Samples\scene2b_complex_id.json" />
+    <None Remove="Samples\scene2b_otherid.json" />
     <None Remove="Samples\scene3a.json" />
+    <None Remove="Samples\scene3a_complex_id.json" />
+    <None Remove="Samples\scene3a_otherid.json" />
     <None Remove="Samples\scene3b.json" />
+    <None Remove="Samples\scene3b_complex_id.json" />
+    <None Remove="Samples\scene3b_otherid.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Samples\LoadTest1.json" />
-    <EmbeddedResource Include="Samples\scene1a.json" />
-    <EmbeddedResource Include="Samples\scene1b.json" />
-    <EmbeddedResource Include="Samples\scene2a.json" />
-    <EmbeddedResource Include="Samples\scene2b.json" />
-    <EmbeddedResource Include="Samples\scene3a.json" />
-    <EmbeddedResource Include="Samples\scene3b.json" />
+    <EmbeddedResource Include="Samples\LoadTest1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene1a_complex_id.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene1a_otherid.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene1a.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene1b_complex_id.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene1b_otherid.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene1b.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene2a_complex_id.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene2a_otherid.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene2a.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene2b_complex_id.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene2b_otherid.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene2b.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene3a_complex_id.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene3a_otherid.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene3a.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene3b_complex_id.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene3b_otherid.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\scene3b.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

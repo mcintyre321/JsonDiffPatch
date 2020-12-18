@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using JsonDiffPatch;
+﻿using JsonDiffPatch;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -68,22 +67,50 @@ namespace Tavis.JsonPatch.Tests
             "{a:[1,2,3,4]}",
             ExpectedResult = "[]",
             TestName = "JsonPatch handles same array")]
+
         [TestCase("{a:[1,2,3,{name:'a'}]}",
             "{a:[1,2,3,{name:'a'}]}",
             ExpectedResult = "[]",
             TestName = "JsonPatch handles same array containing objects")]
+
         [TestCase("{a:[1,2,3,{name:'a'},4,5]}",
           "{a:[1,2,3,{name:'b'},4,5]}",
           ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/3/name\",\"value\":\"b\"}]",
           TestName = "Replaces array items")]
+
         [TestCase("{a:[]}",
           "{a:[]}",
           ExpectedResult = "[]",
           TestName = "Empty array gives no operations")]
+
         [TestCase("['a', 'b', 'c']",
             "['a', 'd', 'c']",
             ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/1\",\"value\":\"d\"}]"
             , TestName = "Inserts item in centre of array correctly")]
+
+        [TestCase(
+            "[1,4,5,6,2]",
+            "[1,3,4,5,2]",
+            ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/1\",\"value\":3},{\"op\":\"replace\",\"path\":\"/2\",\"value\":4},{\"op\":\"replace\",\"path\":\"/3\",\"value\":5}]"
+            , TestName = "Replaces items in middle of int array")]
+
+        [TestCase(
+            "[\"1\",\"4\",\"5\",\"6\",\"2\"]",
+            "[\"1\",\"3\",\"4\",\"5\",\"2\"]",
+            ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/1\",\"value\":\"3\"},{\"op\":\"replace\",\"path\":\"/2\",\"value\":\"4\"},{\"op\":\"replace\",\"path\":\"/3\",\"value\":\"5\"}]"
+            , TestName = "Replaces items in middle of string array")]
+
+        [TestCase(
+            "[{\"prop\":\"1\"},{\"prop\":\"4\"},{\"prop\":\"5\"},{\"prop\":\"6\"},{\"prop\":\"2\"}]",
+            "[{\"prop\":\"1\"},{\"prop\":\"3\"},{\"prop\":\"4\"},{\"prop\":\"5\"},{\"prop\":\"2\"}]",
+            ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/1/prop\",\"value\":\"3\"},{\"op\":\"replace\",\"path\":\"/2/prop\",\"value\":\"4\"},{\"op\":\"replace\",\"path\":\"/3/prop\",\"value\":\"5\"}]"
+            , TestName = "Replaces items in middle of complex objects array")]
+
+        [TestCase(
+            "[1,4,5,6,2]",
+            "[1,3,4,5,7,2]",
+            ExpectedResult = "[{\"op\":\"remove\",\"path\":\"/1\"},{\"op\":\"remove\",\"path\":\"/1\"},{\"op\":\"replace\",\"path\":\"/1\",\"value\":3},{\"op\":\"add\",\"path\":\"/2\",\"value\":4},{\"op\":\"add\",\"path\":\"/3\",\"value\":5},{\"op\":\"add\",\"path\":\"/4\",\"value\":7}]"
+            , TestName = "Manipulates items in middle of int array with different length")]
 
         //[TestCase("{a:[1,2,3,{name:'a'}]}",
         //    "{a:[1,2,3,{name:'b'}]}",

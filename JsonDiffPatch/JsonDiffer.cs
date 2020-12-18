@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -79,8 +78,8 @@ namespace JsonDiffPatch
             }
             else if (left.Type == JTokenType.Object)
             {
-                var lprops = ((IDictionary<string, JToken>) left).OrderBy(p => p.Key);
-                var rprops = ((IDictionary<string, JToken>) right).OrderBy(p => p.Key);
+                var lprops = ((IDictionary<string, JToken>)left).OrderBy(p => p.Key);
+                var rprops = ((IDictionary<string, JToken>)right).OrderBy(p => p.Key);
 
                 foreach (var removed in lprops.Except(rprops, MatchesKey.Instance))
                 {
@@ -93,7 +92,7 @@ namespace JsonDiffPatch
                 }
 
                 var matchedKeys = lprops.Select(x => x.Key).Intersect(rprops.Select(y => y.Key));
-                var zipped = matchedKeys.Select(k => new {key = k, left = left[k], right = right[k]});
+                var zipped = matchedKeys.Select(k => new { key = k, left = left[k], right = right[k] });
 
                 foreach (var match in zipped)
                 {
@@ -119,16 +118,13 @@ namespace JsonDiffPatch
         {
             var comparer = new CustomCheckEqualityComparer(useIdPropertyToDetermineEquality, new JTokenEqualityComparer());
 
-           
-
-
             int commonHead = 0;
             int commonTail = 0;
             var array1 = left.ToArray();
             var len1 = array1.Length;
             var array2 = right.ToArray();
             var len2 = array2.Length;
-        //    if (len1 == 0 && len2 ==0 ) yield break;
+            //    if (len1 == 0 && len2 ==0 ) yield break;
             while (commonHead < len1 && commonHead < len2)
             {
                 if (comparer.Equals(array1[commonHead], array2[commonHead]) == false) break;
@@ -139,11 +135,10 @@ namespace JsonDiffPatch
                     yield return operation;
                 }
                 commonHead++;
-
             }
 
             // separate common tail
-            while (commonTail + commonHead < len1 && commonTail + commonHead < len2 )
+            while (commonTail + commonHead < len1 && commonTail + commonHead < len2)
             {
                 if (comparer.Equals(array1[len1 - 1 - commonTail], array2[len2 - 1 - commonTail]) == false) break;
 
@@ -166,16 +161,15 @@ namespace JsonDiffPatch
                 yield break;
             }
 
-
             var leftMiddle = array1.Skip(commonHead).Take(array1.Length - commonTail - commonHead).ToArray();
-            var rightMiddle = array2.Skip(commonHead ).Take(array2.Length - commonTail - commonHead).ToArray();
+            var rightMiddle = array2.Skip(commonHead).Take(array2.Length - commonTail - commonHead).ToArray();
 
             // Just a replace of values!
             if (leftMiddle.Length == rightMiddle.Length)
             {
                 for (int i = 0; i < leftMiddle.Length; i++)
                 {
-                    foreach (var operation in CalculatePatch(leftMiddle[i], rightMiddle[i], useIdPropertyToDetermineEquality, path + "/" + commonHead))
+                    foreach (var operation in CalculatePatch(leftMiddle[i], rightMiddle[i], useIdPropertyToDetermineEquality, $"{path}/{commonHead + i}"))
                     {
                         yield return operation;
                     }
@@ -184,21 +178,20 @@ namespace JsonDiffPatch
                 yield break;
             }
 
-            
-
             foreach (var jToken in leftMiddle)
             {
                 yield return new RemoveOperation()
                 {
-                    Path = new JsonPointer(path + "/" + (commonHead ))
+                    Path = new JsonPointer($"{path}/{commonHead}")
                 };
             }
+
             for (int i = 0; i < rightMiddle.Length; i++)
             {
                 yield return new AddOperation()
                 {
                     Value = rightMiddle[i],
-                    Path = new JsonPointer(path + "/" + (i + commonHead))
+                    Path = new JsonPointer($"{path}/{commonHead + i}")
                 };
             }
 
@@ -210,7 +203,7 @@ namespace JsonDiffPatch
             //        yield break;
             //    }
             //    // trivial case, a block (1 or more consecutive items) was added
-           
+
             //    for (index = commonHead; index < len2 - commonTail; index++)
             //    {
             //        yield return new AddOperation()
@@ -311,9 +304,6 @@ namespace JsonDiffPatch
             //    }
             //}
         }
-
-    
-  
 
         private class MatchesKey : IEqualityComparer<KeyValuePair<string, JToken>>
         {

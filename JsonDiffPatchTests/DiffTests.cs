@@ -112,10 +112,76 @@ namespace Tavis.JsonPatch.Tests
             ExpectedResult = "[{\"op\":\"remove\",\"path\":\"/1\"},{\"op\":\"remove\",\"path\":\"/1\"},{\"op\":\"replace\",\"path\":\"/1\",\"value\":3},{\"op\":\"add\",\"path\":\"/2\",\"value\":4},{\"op\":\"add\",\"path\":\"/3\",\"value\":5},{\"op\":\"add\",\"path\":\"/4\",\"value\":7}]"
             , TestName = "Manipulates items in middle of int array with different length")]
 
-        //[TestCase("{a:[1,2,3,{name:'a'}]}",
-        //    "{a:[1,2,3,{name:'b'}]}",
-        //    ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/3/name\",\"value\":'b'}]",
-        //    TestName = "JsonPatch handles same array containing different objects")]
+        [TestCase(
+            "{a:{}}",
+            "{a:{'foo/bar':1337}}",
+            ExpectedResult = "[{\"op\":\"add\",\"path\":\"/a/foo~1bar\",\"value\":1337}]"
+            , TestName = "Adds a key containing a slash")]
+
+        [TestCase(
+            "{a:{}}",
+            "{a:{'foo~1bar':1337}}",
+            ExpectedResult = "[{\"op\":\"add\",\"path\":\"/a/foo~01bar\",\"value\":1337}]"
+            , TestName = "Adds a key containing a tilde")]
+
+        [TestCase(
+            "{a:{}}",
+            "{a:{'foo0~/1bar':1337}}",
+            ExpectedResult = "[{\"op\":\"add\",\"path\":\"/a/foo0~0~11bar\",\"value\":1337}]"
+            , TestName = "Adds a key containing a tilde and a slash")]
+
+        [TestCase(
+            "{a:{'foo/bar':42}}",
+            "{a:{'foo/bar':1337}}",
+            ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/foo~1bar\",\"value\":1337}]"
+            , TestName = "Replaces a key containing a slash")]
+
+        [TestCase(
+            "{a:{'foo/bar':42}}",
+            "{a:{}}",
+            ExpectedResult = "[{\"op\":\"remove\",\"path\":\"/a/foo~1bar\"}]"
+            , TestName = "Remove a key containing a slash")]
+
+        [TestCase(
+            "{a:[]}",
+            "{a:[{'foo/bar':1337}]}",
+            ExpectedResult = "[{\"op\":\"add\",\"path\":\"/a/0\",\"value\":{\"foo/bar\":1337}}]"
+            , TestName = "Adds an object to an array that contains a slash in some property")]
+
+        [TestCase(
+            "{a:[{'foo/bar':1337}]}",
+            "{a:[]}",
+            ExpectedResult = "[{\"op\":\"remove\",\"path\":\"/a/0\"}]"
+            , TestName = "Remove an object to an array that contains a slash in some property")]
+
+        [TestCase(
+            "{a:[{},{'foo/bar':42}]}",
+            "{a:[{},{'foo/bar':1337}]}",
+            ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/1/foo~1bar\",\"value\":1337}]"
+            , TestName = "Replace a value in an object in an array that contains a slash in some property")]
+
+        [TestCase(
+            "{a:[{'foo/bar':42}]}",
+            "{a:[{'foo/bar':1337}]}",
+            ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a\",\"value\":[{\"foo/bar\":1337}]}]"
+            , TestName = "Replace whole array that contains a slash in some property")]
+
+        [TestCase(
+            "{a:[{'foo~bar':42}]}",
+            "{a:[{'foo~bar':1337}]}",
+            ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a\",\"value\":[{\"foo~bar\":1337}]}]"
+            , TestName = "Replace whole array that contains a tilde in some property")]
+
+        [TestCase(
+            "{a:[{},{'foo~bar':42}]}",
+            "{a:[{},{'foo~bar':1337}]}",
+            ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/1/foo~0bar\",\"value\":1337}]"
+            , TestName = "Replace a value in an object in an array that contains a tilde in some property")]
+
+        [TestCase("{a:[1,2,3,{name:'a'}]}",
+            "{a:[1,2,3,{name:'b'}]}",
+            ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/3/name\",\"value\":\"b\"}]",
+            TestName = "JsonPatch handles same array containing different objects")]
         public string JsonPatchesWorks(string leftString, string rightString)
         {
             var left = JToken.Parse(leftString);

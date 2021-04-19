@@ -9,6 +9,7 @@ namespace JsonDiffPatch
 
         protected override JToken Replace(ReplaceOperation operation, JToken target)
         {
+            operation.Path.ToString().Replace("~1", "/").Replace("~0", "~");
             var token = operation.Path.Find(target);
             if (token.Parent == null)
             {
@@ -27,7 +28,7 @@ namespace JsonDiffPatch
             JObject parenttoken = null;
             var parentPath = operation.Path.ParentPointer.ToString();
             int index = parentPath == "/" ? parentPath.Length : parentPath.Length + 1;
-            var propertyName = operation.Path.ToString().Substring(index);
+            var propertyName = operation.Path.ToString().Substring(index).Replace("~1", "/").Replace("~0", "~");
             try
             {
                 var parentArray = operation.Path.ParentPointer.Find(target) as JArray;
@@ -63,7 +64,7 @@ namespace JsonDiffPatch
             else if (token is JArray)
             {
                 var array = token as JArray;
-                
+
                 array.Add(operation.Value);
             }
             else if (token.Parent is JProperty)

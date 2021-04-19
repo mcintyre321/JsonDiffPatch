@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Tavis;
 
@@ -32,6 +33,8 @@ namespace JsonDiffPatch
             writer.WritePropertyName("value");
             value.WriteTo(writer);
         }
+
+        protected static string[] SplitPath(string path) => path.Split('/').Skip(1).ToArray();
 
         public abstract void Read(JObject jOperation);
 

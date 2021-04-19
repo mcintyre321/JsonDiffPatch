@@ -15,7 +15,7 @@ namespace Tavis
             _Tokens = pointer.Split('/').Skip(1).Select(Decode).ToArray();
         }
 
-        private JsonPointer(string[] tokens)
+        internal JsonPointer(string[] tokens)
         {
             _Tokens = tokens;
         }
@@ -47,7 +47,7 @@ namespace Tavis
             try
             {
                 var pointer = sample;
-                foreach (var token in _Tokens)
+                foreach (var token in _Tokens.Select(t => t.Replace("~1", "/").Replace("~0", "~")))
                 {
                     if (pointer is JArray)
                     {

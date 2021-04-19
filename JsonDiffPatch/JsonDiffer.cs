@@ -14,8 +14,10 @@ namespace JsonDiffPatch
         internal static string Extend(string path, string extension)
         {
             // TODO: JSON property name needs escaping for path ??
-            return path + "/" + extension;
+            return path + "/" + EncodeKey(extension);
         }
+
+        private static string EncodeKey(string key) => key.Replace("~", "~0").Replace("/", "~1");
 
         private static Operation Build(string op, string path, string key, JToken value)
         {
@@ -71,6 +73,7 @@ namespace JsonDiffPatch
                         prev = operation;
                     }
                 }
+
                 if (prev != null)
                 {
                     yield return prev;
@@ -78,8 +81,8 @@ namespace JsonDiffPatch
             }
             else if (left.Type == JTokenType.Object)
             {
-                var lprops = ((IDictionary<string, JToken>)left).OrderBy(p => p.Key);
-                var rprops = ((IDictionary<string, JToken>)right).OrderBy(p => p.Key);
+                var lprops = ((IDictionary<string, JToken>) left).OrderBy(p => p.Key);
+                var rprops = ((IDictionary<string, JToken>) right).OrderBy(p => p.Key);
 
                 foreach (var removed in lprops.Except(rprops, MatchesKey.Instance))
                 {
@@ -92,14 +95,15 @@ namespace JsonDiffPatch
                 }
 
                 var matchedKeys = lprops.Select(x => x.Key).Intersect(rprops.Select(y => y.Key));
-                var zipped = matchedKeys.Select(k => new { key = k, left = left[k], right = right[k] });
+                var zipped = matchedKeys.Select(k => new {key = k, left = left[k], right = right[k]});
 
                 foreach (var match in zipped)
                 {
-                    string newPath = path + "/" + match.key;
+                    string newPath = path + "/" + EncodeKey(match.key);
                     foreach (var patch in CalculatePatch(match.left, match.right, useIdToDetermineEquality, newPath))
                         yield return patch;
                 }
+
                 yield break;
             }
             else
@@ -116,7 +120,8 @@ namespace JsonDiffPatch
         private static IEnumerable<Operation> ProcessArray(JToken left, JToken right, string path,
             bool useIdPropertyToDetermineEquality)
         {
-            var comparer = new CustomCheckEqualityComparer(useIdPropertyToDetermineEquality, new JTokenEqualityComparer());
+            var comparer =
+                new CustomCheckEqualityComparer(useIdPropertyToDetermineEquality, new JTokenEqualityComparer());
 
             int commonHead = 0;
             int commonTail = 0;
@@ -130,10 +135,12 @@ namespace JsonDiffPatch
                 if (comparer.Equals(array1[commonHead], array2[commonHead]) == false) break;
 
                 //diff and yield objects here
-                foreach (var operation in CalculatePatch(array1[commonHead], array2[commonHead], useIdPropertyToDetermineEquality, path + "/" + commonHead))
+                foreach (var operation in CalculatePatch(array1[commonHead], array2[commonHead],
+                    useIdPropertyToDetermineEquality, path + "/" + commonHead))
                 {
                     yield return operation;
                 }
+
                 commonHead++;
             }
 
@@ -144,10 +151,12 @@ namespace JsonDiffPatch
 
                 var index1 = len1 - 1 - commonTail;
                 var index2 = len2 - 1 - commonTail;
-                foreach (var operation in CalculatePatch(array1[index1], array2[index2], useIdPropertyToDetermineEquality, path + "/" + index1))
+                foreach (var operation in CalculatePatch(array1[index1], array2[index2],
+                    useIdPropertyToDetermineEquality, path + "/" + index1))
                 {
                     yield return operation;
                 }
+
                 commonTail++;
             }
 
@@ -169,7 +178,8 @@ namespace JsonDiffPatch
             {
                 for (int i = 0; i < leftMiddle.Length; i++)
                 {
-                    foreach (var operation in CalculatePatch(leftMiddle[i], rightMiddle[i], useIdPropertyToDetermineEquality, $"{path}/{commonHead + i}"))
+                    foreach (var operation in CalculatePatch(leftMiddle[i], rightMiddle[i],
+                        useIdPropertyToDetermineEquality, $"{path}/{commonHead + i}"))
                     {
                         yield return operation;
                     }
@@ -308,6 +318,7 @@ namespace JsonDiffPatch
         private class MatchesKey : IEqualityComparer<KeyValuePair<string, JToken>>
         {
             public static MatchesKey Instance = new MatchesKey();
+
             public bool Equals(KeyValuePair<string, JToken> x, KeyValuePair<string, JToken> y)
             {
                 return x.Key.Equals(y.Key);
@@ -320,7 +331,7 @@ namespace JsonDiffPatch
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="@from"></param>
         /// <param name="to"></param>
@@ -357,6 +368,7 @@ namespace JsonDiffPatch
                     return true;
                 }
             }
+
             return _inner.Equals(x, y);
         }
 
@@ -368,6 +380,7 @@ namespace JsonDiffPatch
                 var xId = xIdToken != null && xIdToken.HasValues ? xIdToken.Value<string>() : null;
                 if (xId != null) return xId.GetHashCode() + _inner.GetHashCode(obj);
             }
+
             return _inner.GetHashCode(obj);
         }
 
@@ -382,6 +395,7 @@ namespace JsonDiffPatch
                 var yId = yIdToken != null ? yIdToken.Value<string>() : null;
                 return xId != null && xId == yId;
             }
+
             return false;
         }
     }

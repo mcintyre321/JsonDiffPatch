@@ -21,7 +21,7 @@ namespace JsonDiffPatch
 
         public override void Read(JObject jOperation)
         {
-            Path = new JsonPointer((string)jOperation.GetValue("path"));
+            Path = new JsonPointer(SplitPath((string)jOperation.GetValue("path")));
             Value = jOperation.GetValue("value");
         }
     }

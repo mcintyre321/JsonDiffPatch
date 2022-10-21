@@ -16,7 +16,7 @@ namespace Tavis.JsonPatch.Tests
             var patchDocument = new PatchDocument();
             var pointer = new JsonPointer("/books/0/author");
 
-            patchDocument.AddOperation(new TestOperation() { Path = pointer, Value = new JValue("Billy Burton") });
+            patchDocument.AddOperation(new TestOperation(pointer, new JValue("Billy Burton")));
 
             Assert.Throws(typeof(InvalidOperationException), () =>
             {

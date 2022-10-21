@@ -6,7 +6,17 @@ namespace JsonDiffPatch
 {
     public class ReplaceOperation : Operation
     {
-        public JToken Value { get; set; }
+        public JToken Value { get; private set; }
+
+        public ReplaceOperation()
+        {
+
+        }
+
+        public ReplaceOperation(JsonPointer path, JToken value) : base(path)
+        {
+            Value = value;
+        }
 
         public override void Write(JsonWriter writer)
         {

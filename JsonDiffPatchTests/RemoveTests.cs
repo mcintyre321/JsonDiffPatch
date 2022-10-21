@@ -15,7 +15,7 @@ namespace Tavis.JsonPatch.Tests
             var patchDocument = new PatchDocument();
             var pointer = new JsonPointer("/books/0/author");
 
-            patchDocument.AddOperation(new RemoveOperation() { Path = pointer });
+            patchDocument.AddOperation(new RemoveOperation(pointer));
 
             new JsonPatcher().Patch(ref sample, patchDocument);
 
@@ -31,7 +31,7 @@ namespace Tavis.JsonPatch.Tests
             var patchDocument = new PatchDocument();
             var pointer = new JsonPointer("/books/0");
 
-            patchDocument.AddOperation(new RemoveOperation() { Path = pointer });
+            patchDocument.AddOperation(new RemoveOperation(pointer));
 
             var patcher = new JsonPatcher();
             patcher.Patch(ref sample, patchDocument);

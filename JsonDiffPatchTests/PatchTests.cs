@@ -57,14 +57,14 @@ namespace Tavis.JsonPatch.Tests
         [Test]
         public void SerializePatchDocument()
         {
-            var patchDoc = new PatchDocument( new Operation[]
+            var patchDoc = new PatchDocument(new Operation[]
             {
-             new TestOperation() {Path = new JsonPointer("/a/b/c"), Value = new JValue("foo")}, 
-             new RemoveOperation() {Path = new JsonPointer("/a/b/c") }, 
-             new AddOperation() {Path = new JsonPointer("/a/b/c"), Value = new JArray(new JValue("foo"), new JValue("bar"))}, 
-             new ReplaceOperation() {Path = new JsonPointer("/a/b/c"), Value = new JValue(42)}, 
-             new MoveOperation() {FromPath = new JsonPointer("/a/b/c"), Path = new JsonPointer("/a/b/d") }, 
-             new CopyOperation() {FromPath = new JsonPointer("/a/b/d"), Path = new JsonPointer("/a/b/e") }, 
+             new TestOperation(new JsonPointer("/a/b/c"), new JValue("foo")),
+             new RemoveOperation(new JsonPointer("/a/b/c")),
+             new AddOperation(new JsonPointer("/a/b/c"), new JArray(new JValue("foo"), new JValue("bar"))),
+             new ReplaceOperation(new JsonPointer("/a/b/c"), new JValue(42)),
+             new MoveOperation(new JsonPointer("/a/b/d"), new JsonPointer("/a/b/c")),
+             new CopyOperation(new JsonPointer("/a/b/e"), new JsonPointer("/a/b/d")),
             });
 
             var outputstream = patchDoc.ToStream();

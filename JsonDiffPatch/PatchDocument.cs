@@ -11,25 +11,19 @@ namespace JsonDiffPatch
     {
         private readonly List<Operation> _Operations = new List<Operation>();
 
-
         public PatchDocument(params Operation[] operations)
         {
-            foreach (var operation in operations)
-            {
-                AddOperation(operation);
-            }
+            _Operations.AddRange(operations);
         }
 
-        public List<Operation> Operations
+        public IReadOnlyCollection<Operation> Operations
         {
             get { return _Operations; }
         }
 
-        
-
         public void AddOperation(Operation operation)
         {
-            Operations.Add(operation);
+            _Operations.Add(operation);
         }
 
         public static PatchDocument Load(Stream document)
@@ -105,7 +99,6 @@ namespace JsonDiffPatch
             {
                 operation.Write(sw);
             }
-
             
             sw.WriteEndArray();
 

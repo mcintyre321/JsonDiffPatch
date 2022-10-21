@@ -1,6 +1,7 @@
 ﻿//see https://github.com/tavis-software/Tavis.JsonPointer
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
@@ -8,14 +9,14 @@ namespace Tavis
 {
     public class JsonPointer
     {
-        private readonly string[] _Tokens;
+        private readonly IReadOnlyList<string> _Tokens;
 
         public JsonPointer(string pointer)
         {
             _Tokens = pointer.Split('/').Skip(1).Select(Decode).ToArray();
         }
 
-        internal JsonPointer(string[] tokens)
+        internal JsonPointer(IReadOnlyList<string> tokens)
         {
             _Tokens = tokens;
         }
@@ -26,21 +27,28 @@ namespace Tavis
 
         public bool IsNewPointer()
         {
-            return _Tokens.Last() == "-";
+            return _Tokens[_Tokens.Count - 1] == "-";
         }
 
         public JsonPointer ParentPointer
         {
             get
             {
-                if (_Tokens.Length == 0) return null;
-                return new JsonPointer(_Tokens.Take(_Tokens.Length-1).ToArray());
+                if (_Tokens.Count == 0) return null;
+
+                var tokens = new string[_Tokens.Count - 1];
+                for (int i = 0; i < _Tokens.Count - 1; i++)
+                {
+                    tokens[i] = _Tokens[i];
+                }
+
+                return new JsonPointer(tokens);
             }
         }
 
         public JToken Find(JToken sample)
         {
-            if (_Tokens.Length == 0)
+            if (_Tokens.Count == 0)
             {
                 return sample;
             }

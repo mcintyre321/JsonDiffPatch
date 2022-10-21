@@ -6,7 +6,17 @@ namespace JsonDiffPatch
 {
     public class CopyOperation : Operation
     {
-        public JsonPointer FromPath { get; set; }
+        public JsonPointer FromPath { get; private set; }
+
+        public CopyOperation()
+        {
+
+        }
+
+        public CopyOperation(JsonPointer path, JsonPointer fromPath) : base(path)
+        {
+            FromPath = fromPath;
+        }
 
         public override void Write(JsonWriter writer)
         {

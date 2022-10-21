@@ -1,3 +1,5 @@
+using System.IO;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Tavis;
@@ -6,7 +8,17 @@ namespace JsonDiffPatch
 {
     public class MoveOperation : Operation
     {
-        public JsonPointer FromPath { get; set; }
+        public JsonPointer FromPath { get; private set; }
+
+        public MoveOperation()
+        {
+
+        }
+
+        public MoveOperation(JsonPointer path, JsonPointer fromPath) : base(path)
+        {
+            FromPath = fromPath;
+        }
 
         public override void Write(JsonWriter writer)
         {

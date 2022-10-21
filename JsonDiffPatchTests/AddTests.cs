@@ -16,7 +16,7 @@ namespace Tavis.JsonPatch.Tests
             var patchDocument = new PatchDocument();
             var pointer = new JsonPointer("/books");
 
-            patchDocument.AddOperation(new AddOperation() { Path = pointer, Value = new JObject(new[] { new JProperty("author", "James Brown") }) });
+            patchDocument.AddOperation(new AddOperation(pointer, new JObject(new[] { new JProperty("author", "James Brown") })));
 
             var patcher = new JsonPatcher();
             patcher.Patch(ref sample, patchDocument);
@@ -36,7 +36,7 @@ namespace Tavis.JsonPatch.Tests
             var patchDocument = new PatchDocument();
             var pointer = new JsonPointer("/books/0/title");
 
-            patchDocument.AddOperation(new AddOperation() { Path = pointer, Value = new JValue("Little Red Riding Hood") });
+            patchDocument.AddOperation(new AddOperation(pointer, new JValue("Little Red Riding Hood")));
 
             var patcher = new JsonPatcher();
             patcher.Patch(ref sample, patchDocument);
@@ -56,7 +56,7 @@ namespace Tavis.JsonPatch.Tests
             var patchDocument = new PatchDocument();
             var pointer = new JsonPointer("/books/0/ISBN");
 
-            patchDocument.AddOperation(new AddOperation() { Path = pointer, Value = new JValue("213324234343") });
+            patchDocument.AddOperation(new AddOperation(pointer, new JValue("213324234343")));
 
             var patcher = new JsonPatcher();
             patcher.Patch(ref sample, patchDocument);
@@ -76,7 +76,7 @@ namespace Tavis.JsonPatch.Tests
             var patchDocument = new PatchDocument();
             var pointer = new JsonPointer("/books/0/b~1c");
 
-            patchDocument.AddOperation(new AddOperation() { Path = pointer, Value = new JValue("42") });
+            patchDocument.AddOperation(new AddOperation(pointer, new JValue("42")));
 
             var patcher = new JsonPatcher();
             patcher.Patch(ref sample, patchDocument);
@@ -96,7 +96,7 @@ namespace Tavis.JsonPatch.Tests
             var patchDocument = new PatchDocument();
             var pointer = new JsonPointer("/books/0/b~0c");
 
-            patchDocument.AddOperation(new AddOperation() { Path = pointer, Value = new JValue("42") });
+            patchDocument.AddOperation(new AddOperation(pointer, new JValue("42")));
 
             var patcher = new JsonPatcher();
             patcher.Patch(ref sample, patchDocument);

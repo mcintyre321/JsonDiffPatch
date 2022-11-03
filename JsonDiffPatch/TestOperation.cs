@@ -1,3 +1,5 @@
+using System.IO;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Tavis;
@@ -6,7 +8,16 @@ namespace JsonDiffPatch
 {
     public class TestOperation : Operation
     {
-        public JToken Value { get; set; }
+        public JToken Value { get; private set; }
+
+        public TestOperation()
+        {
+        }
+
+        public TestOperation(JsonPointer path, JToken value) : base(path)
+        {
+            Value = value;
+        }
 
         public override void Write(IJsonObjectWriter writer)
         {

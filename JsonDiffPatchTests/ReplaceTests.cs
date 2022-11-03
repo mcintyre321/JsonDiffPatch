@@ -15,7 +15,7 @@ namespace Tavis.JsonPatch.Tests
             var patchDocument = new PatchDocument();
             var pointer = new JsonPointer("/books/0/author");
 
-            patchDocument.AddOperation(new ReplaceOperation() { Path = pointer, Value = new JValue("Bob Brown") });
+            patchDocument.AddOperation(new ReplaceOperation(pointer, new JValue("Bob Brown")));
 
             new JsonPatcher().Patch(ref sample, patchDocument);
 
@@ -31,7 +31,7 @@ namespace Tavis.JsonPatch.Tests
             var patchDocument = new PatchDocument();
             var pointer = new JsonPointer("/books/0/author");
 
-            patchDocument.AddOperation(new ReplaceOperation() { Path = pointer, Value = new JObject(new[] { new JProperty("hello", "world") }) });
+            patchDocument.AddOperation(new ReplaceOperation(pointer, new JObject(new[] { new JProperty("hello", "world") })));
 
             new JsonPatcher().Patch(ref sample, patchDocument);
 

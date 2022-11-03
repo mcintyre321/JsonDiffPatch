@@ -162,11 +162,7 @@ namespace JsonDiffPatch
 
             if (commonHead == 0 && commonTail == 0 && len2 > 0 && len1 > 0)
             {
-                yield return new ReplaceOperation()
-                {
-                    Path = new JsonPointer(path),
-                    Value = new JArray(array2)
-                };
+                yield return new ReplaceOperation(new JsonPointer(path), new JArray(array2));
                 yield break;
             }
 
@@ -190,19 +186,12 @@ namespace JsonDiffPatch
 
             foreach (var jToken in leftMiddle)
             {
-                yield return new RemoveOperation()
-                {
-                    Path = new JsonPointer($"{path}/{commonHead}")
-                };
+                yield return new RemoveOperation(new JsonPointer($"{path}/{commonHead}"));
             }
 
             for (int i = 0; i < rightMiddle.Length; i++)
             {
-                yield return new AddOperation()
-                {
-                    Value = rightMiddle[i],
-                    Path = new JsonPointer($"{path}/{commonHead + i}")
-                };
+                yield return new AddOperation(new JsonPointer($"{path}/{commonHead + i}"), rightMiddle[i]);
             }
 
             //if (commonHead + commonTail == len1)

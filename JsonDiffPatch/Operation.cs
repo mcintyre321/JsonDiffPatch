@@ -7,7 +7,17 @@ namespace JsonDiffPatch
 {
     public abstract class Operation
     {
-        public JsonPointer Path { get; set; }
+        public JsonPointer Path { get; protected set; }
+
+        public Operation()
+        {
+
+        }
+
+        public Operation(JsonPointer path)
+        {
+            Path = path;
+        }
 
         public abstract void Write(IJsonObjectWriter writer);
 

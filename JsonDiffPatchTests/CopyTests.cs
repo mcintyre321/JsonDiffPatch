@@ -15,7 +15,7 @@ namespace Tavis.JsonPatch.Tests
             var frompointer = new JsonPointer("/books/0");
             var topointer = new JsonPointer("/books/-");
 
-            patchDocument.AddOperation(new CopyOperation() { FromPath = frompointer, Path = topointer });
+            patchDocument.AddOperation(new CopyOperation(topointer, frompointer));
 
             var patcher = new JsonPatcher();
             patcher.Patch(ref sample, patchDocument);
@@ -34,8 +34,8 @@ namespace Tavis.JsonPatch.Tests
             var frompointer = new JsonPointer("/books/0/ISBN");
             var topointer = new JsonPointer("/books/1/ISBN");
 
-            patchDocument.AddOperation(new AddOperation() { Path = frompointer, Value = new JValue("21123123") });
-            patchDocument.AddOperation(new CopyOperation() { FromPath = frompointer, Path = topointer });
+            patchDocument.AddOperation(new AddOperation(frompointer, new JValue("21123123")));
+            patchDocument.AddOperation(new CopyOperation(topointer, frompointer));
 
             var patcher = new JsonPatcher();
             patcher.Patch(ref sample, patchDocument);

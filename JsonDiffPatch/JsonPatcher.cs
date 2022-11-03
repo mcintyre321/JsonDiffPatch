@@ -93,8 +93,8 @@ namespace JsonDiffPatch
             if (operation.Path.ToString().StartsWith(operation.FromPath.ToString())) throw new ArgumentException("To path cannot be below from path");
 
             var token = operation.FromPath.Find(target);
-            Remove(new RemoveOperation(){Path = operation.FromPath}, target);
-            Add(new AddOperation() {Path = operation.Path, Value = token}, target);
+            Remove(new RemoveOperation(operation.FromPath), target);
+            Add(new AddOperation(operation.Path, token), target);
         }
 
         protected override void Test(TestOperation operation, JToken target)
@@ -109,7 +109,7 @@ namespace JsonDiffPatch
         protected override void Copy(CopyOperation operation, JToken target)
         {
             var token = operation.FromPath.Find(target);  // Do I need to clone this?
-            Add(new AddOperation() {Path = operation.Path, Value = token}, target);
+            Add(new AddOperation(operation.Path, token), target);
         }
     }
 }

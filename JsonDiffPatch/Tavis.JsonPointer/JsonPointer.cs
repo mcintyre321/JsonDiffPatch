@@ -2,53 +2,51 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+
+using JsonDiffPatch;
+
 using Newtonsoft.Json.Linq;
 
 namespace Tavis
 {
     public class JsonPointer
     {
-        private readonly IReadOnlyList<string> _Tokens;
+        private readonly JsonPointerTokensSource _Tokens;
 
         public JsonPointer(string pointer)
         {
-            _Tokens = pointer.Split('/').Skip(1).Select(Decode).ToArray();
+            _Tokens = new JsonPointerTokensSource(Uri.UnescapeDataString(pointer));
         }
 
-        internal JsonPointer(IReadOnlyList<string> tokens)
+        public JsonPointer(JToken jToken)
+        {
+            _Tokens = new JsonPointerTokensSource(jToken.ToString());
+        }
+
+        private JsonPointer(JsonPointerTokensSource tokens)
         {
             _Tokens = tokens;
-        }
-        private string Decode(string token)
-        {
-            return Uri.UnescapeDataString(token).Replace("~1", "/").Replace("~0", "~");
         }
 
         public bool IsNewPointer()
         {
-            return _Tokens[_Tokens.Count - 1] == "-";
+            return _Tokens.Last() == "-";
         }
 
         public JsonPointer ParentPointer
         {
             get
             {
-                if (_Tokens.Count == 0) return null;
-
-                var tokens = new string[_Tokens.Count - 1];
-                for (int i = 0; i < _Tokens.Count - 1; i++)
-                {
-                    tokens[i] = _Tokens[i];
-                }
-
-                return new JsonPointer(tokens);
+                if (_Tokens.IsEmpty) return null;
+                return new JsonPointer(_Tokens.ForParent());
             }
         }
 
         public JToken Find(JToken sample)
         {
-            if (_Tokens.Count == 0)
+            if (_Tokens.IsEmpty)
             {
                 return sample;
             }
@@ -75,7 +73,7 @@ namespace Tavis
             }
             catch (Exception ex)
             {
-                throw  new ArgumentException("Failed to dereference pointer",ex);
+                throw new ArgumentException("Failed to dereference pointer", ex);
             }
         }
 

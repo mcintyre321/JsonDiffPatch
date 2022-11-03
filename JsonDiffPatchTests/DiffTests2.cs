@@ -20,7 +20,7 @@ namespace Tavis.JsonPatch.Tests
                 var scene1 = JToken.Parse(scene1Text);
                 var scene2Text = File.ReadAllText(string.Format(rightPath, i));
                 var scene2 = JToken.Parse(scene2Text);
-                var patchDoc = new JsonDiffer().Diff(scene1, scene2, true);
+                var patchDoc = JsonDiffer.Diff(scene1, scene2, true);
                 //Assert.AreEqual("[{\"op\":\"remove\",\"path\":\"/items/0/entities/1\"}]",
                 var patcher = new JsonPatcher();
                 patcher.Patch(ref scene1, patchDoc);

@@ -17,19 +17,14 @@ namespace JsonDiffPatch
         {
         }
 
-        public override void Write(JsonWriter writer)
+        public override void Write(IJsonObjectWriter writer)
         {
-            writer.WriteStartObject();
-
-            WriteOp(writer, "remove");
-            WritePath(writer, Path);
-
-            writer.WriteEndObject();
+            writer.WriteOp("remove").WritePath(Path);
         }
 
         public override void Read(JObject jOperation)
         {
-            Path = new JsonPointer(SplitPath((string)jOperation.GetValue("path")));
+            Path = new JsonPointer(jOperation.GetValue("path"));
         }
     }
 }

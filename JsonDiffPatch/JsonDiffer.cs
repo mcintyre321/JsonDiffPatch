@@ -9,9 +9,9 @@ namespace JsonDiffPatch
     /// <summary>
     /// Parts adapted from https://github.com/benjamine/jsondiffpatch/blob/42ce1b6ca30c4d7a19688a020fce021a756b43cc/src/filters/arrays.js
     /// </summary>
-    public class JsonDiffer
+    public static class JsonDiffer
     {
-        internal static string Extend(string path, string extension)
+        private static string Extend(string path, string extension)
         {
             // TODO: JSON property name needs escaping for path ??
             return path + "/" + EncodeKey(extension);
@@ -31,22 +31,22 @@ namespace JsonDiffPatch
                                     (value == null ? "null" : value.ToString(Formatting.None)) + "}");
         }
 
-        internal static Operation Add(string path, string key, JToken value)
+        private static Operation Add(string path, string key, JToken value)
         {
             return Build("add", path, key, value);
         }
 
-        internal static Operation Remove(string path, string key)
+        private static Operation Remove(string path, string key)
         {
             return Build("remove", path, key, null);
         }
 
-        internal static Operation Replace(string path, string key, JToken value)
+        private static Operation Replace(string path, string key, JToken value)
         {
             return Build("replace", path, key, value);
         }
 
-        internal static IEnumerable<Operation> CalculatePatch(JToken left, JToken right, bool useIdToDetermineEquality,
+        private static IEnumerable<Operation> CalculatePatch(JToken left, JToken right, bool useIdToDetermineEquality,
             string path = "")
         {
             if (left.Type != right.Type)
@@ -306,7 +306,12 @@ namespace JsonDiffPatch
 
         private class MatchesKey : IEqualityComparer<KeyValuePair<string, JToken>>
         {
-            public static MatchesKey Instance = new MatchesKey();
+            public readonly static MatchesKey Instance = new MatchesKey();
+
+            private MatchesKey()
+            {
+
+            }
 
             public bool Equals(KeyValuePair<string, JToken> x, KeyValuePair<string, JToken> y)
             {
@@ -326,9 +331,9 @@ namespace JsonDiffPatch
         /// <param name="to"></param>
         /// <param name="useIdPropertyToDetermineEquality">Use id propety on array members to determine equality</param>
         /// <returns></returns>
-        public PatchDocument Diff(JToken @from, JToken to, bool useIdPropertyToDetermineEquality)
+        public static PatchDocument Diff(JToken @from, JToken to, bool useIdPropertyToDetermineEquality)
         {
-            return new PatchDocument(CalculatePatch(@from, to, useIdPropertyToDetermineEquality).ToArray());
+            return new PatchDocument(CalculatePatch(@from, to, useIdPropertyToDetermineEquality));
         }
     }
 

@@ -187,7 +187,7 @@ namespace Tavis.JsonPatch.Tests
             var left = JToken.Parse(leftString);
             var right = JToken.Parse(rightString);
 
-            var patchDoc = new JsonDiffer().Diff(left, right, false);
+            var patchDoc = JsonDiffer.Diff(left, right, false);
             var patcher = new JsonPatcher();
             patcher.Patch(ref left, patchDoc);
 

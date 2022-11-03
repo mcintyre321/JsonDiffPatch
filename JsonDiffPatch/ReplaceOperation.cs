@@ -8,20 +8,16 @@ namespace JsonDiffPatch
     {
         public JToken Value { get; set; }
 
-        public override void Write(JsonWriter writer)
+        public override void Write(IJsonObjectWriter writer)
         {
-            writer.WriteStartObject();
-
-            WriteOp(writer, "replace");
-            WritePath(writer, Path);
-            WriteValue(writer, Value);
-
-            writer.WriteEndObject();
+            writer.WriteOp("replace").
+                WritePath(Path).
+                WriteValue(Value);
         }
 
         public override void Read(JObject jOperation)
         {
-            Path = new JsonPointer(SplitPath((string)jOperation.GetValue("path")));
+            Path = new JsonPointer(jOperation.GetValue("path"));
             Value = jOperation.GetValue("value");
         }
     }

@@ -21,14 +21,11 @@ namespace JsonDiffPatch
 
         private static Operation Build(string op, string path, string key, JToken value)
         {
-            if (string.IsNullOrEmpty(key))
-                return
-                    Operation.Parse("{ 'op' : '" + op + "' , path: '" + path + "', value: " +
-                                    (value == null ? "null" : value.ToString(Formatting.None)) + "}");
-            else
-                return
-                    Operation.Parse("{ op : '" + op + "' , path : '" + Extend(path, key) + "' , value : " +
-                                    (value == null ? "null" : value.ToString(Formatting.None)) + "}");
+            var operation = string.Empty;
+            var fullPath = string.IsNullOrEmpty(key) ? path : Extend(path, key);
+            var stringValue = value == null ? "null" : value.ToString(Formatting.None);
+            operation = $"{{ \"op\": \"{op}\", \"path\": \"{fullPath}\", \"value\": {stringValue}}}";
+            return Operation.Parse(operation);
         }
 
         internal static Operation Add(string path, string key, JToken value)
@@ -81,8 +78,8 @@ namespace JsonDiffPatch
             }
             else if (left.Type == JTokenType.Object)
             {
-                var lprops = ((IDictionary<string, JToken>) left).OrderBy(p => p.Key);
-                var rprops = ((IDictionary<string, JToken>) right).OrderBy(p => p.Key);
+                var lprops = ((IDictionary<string, JToken>)left).OrderBy(p => p.Key);
+                var rprops = ((IDictionary<string, JToken>)right).OrderBy(p => p.Key);
 
                 foreach (var removed in lprops.Except(rprops, MatchesKey.Instance))
                 {
@@ -95,7 +92,7 @@ namespace JsonDiffPatch
                 }
 
                 var matchedKeys = lprops.Select(x => x.Key).Intersect(rprops.Select(y => y.Key));
-                var zipped = matchedKeys.Select(k => new {key = k, left = left[k], right = right[k]});
+                var zipped = matchedKeys.Select(k => new { key = k, left = left[k], right = right[k] });
 
                 foreach (var match in zipped)
                 {

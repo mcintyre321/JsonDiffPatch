@@ -182,6 +182,11 @@ namespace Tavis.JsonPatch.Tests
             "{a:[1,2,3,{name:'b'}]}",
             ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/a/3/name\",\"value\":\"b\"}]",
             TestName = "JsonPatch handles same array containing different objects")]
+        [TestCase("{\"isn't\": true}",
+            "{\"isn't\": false}",
+            ExpectedResult = "[{\"op\":\"replace\",\"path\":\"/isn't\",\"value\":false}]",
+            TestName = "JsonPatch handles quotation marks in property name"
+        )]
         public string JsonPatchesWorks(string leftString, string rightString)
         {
             var left = JToken.Parse(leftString);

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.4;net452;netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Description>Library for diffing and RFC 6902 patching json.net json objects - forked from Tavis.JsonPatch, with an addition of json diff code by Ian Mercer, with additional partial array LCS diff by JC Dickinson</Description>
     <PackageLicenseUrl>https://github.com/mcintyre321/JsonDiffPatch/blob/master/License.txt</PackageLicenseUrl>
     <Copyright />
@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

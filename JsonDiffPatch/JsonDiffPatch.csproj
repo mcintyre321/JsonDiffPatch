@@ -1,18 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- metadata -->
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.4;net452;netcoreapp1.1</TargetFrameworks>
     <Description>Library for diffing and RFC 6902 patching json.net json objects - forked from Tavis.JsonPatch, with an addition of json diff code by Ian Mercer, with additional partial array LCS diff by JC Dickinson</Description>
-    <PackageLicenseUrl>https://github.com/mcintyre321/JsonDiffPatch/blob/master/License.txt</PackageLicenseUrl>
-    <Copyright />
+    <License>https://github.com/mcintyre321/JsonDiffPatch/blob/master/License.txt</License>
     <PackageProjectUrl>https://github.com/mcintyre321/JsonDiffPatch</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mcintyre321/JsonDiffPatch</RepositoryUrl>
     <PackageTags>JSON, Diff, Patch, RFC, 6902</PackageTags>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>2.0.0</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+<!-- SourceLink integration -->
+<PropertyGroup>
+    <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Optional: Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Optional: Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <ItemGroup>
+      <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
   </ItemGroup>
 
 </Project>
